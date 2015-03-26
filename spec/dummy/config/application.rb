@@ -9,7 +9,6 @@ require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
-require "yaffle"
 
 module Dummy
   class Application < Rails::Application
@@ -26,4 +25,3 @@ module Dummy
     # config.i18n.default_locale = :de
   end
 end
-
