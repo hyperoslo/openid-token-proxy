@@ -1,0 +1,148 @@
+require 'spec_helper'
+
+RSpec.describe OpenIDTokenProxy::Config do
+  subject { described_class.send(:new) }
+  let(:with_valid_issuer) {
+    subject.issuer = 'https://login.windows.net/common'
+    subject
+  }
+
+  describe '#client_id' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_CLIENT_ID', 'from env')
+      expect(subject.client_id).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.client_id = 'overridden'
+      expect(subject.client_id).to eq 'overridden'
+    end
+  end
+
+  describe '#client_secret' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_CLIENT_SECRET', 'from env')
+      expect(subject.client_secret).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.client_secret = 'overridden'
+      expect(subject.client_secret).to eq 'overridden'
+    end
+  end
+
+  describe '#issuer' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_ISSUER', 'from env')
+      expect(subject.issuer).to eq 'from env'
+    end
+
+    it 'may be overriden' do
+      subject.issuer = 'overridden'
+      expect(subject.issuer).to eq 'overridden'
+    end
+  end
+
+  describe '#resource' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_RESOURCE', 'from env')
+      expect(subject.resource).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.resource = 'overridden'
+      expect(subject.resource).to eq 'overridden'
+    end
+  end
+
+  describe '#provider_config' do
+    context 'when valid issuer' do
+      it 'loads provider configuration' do
+        expect do
+          with_valid_issuer.provider_config
+        end.not_to raise_error
+      end
+    end
+
+    context 'when issuer omitted' do
+      it 'raises' do
+        expect do
+          subject.provider_config
+        end.to raise_error
+      end
+    end
+
+    context 'when invalid issuer' do
+      it 'raises' do
+        subject.issuer = 'https://example.com'
+        expect do
+          subject.provider_config
+        end.to raise_error
+      end
+    end
+  end
+
+  describe '#authorization_endpoint' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_AUTHORIZATION_ENDPOINT', 'from env')
+      expect(subject.authorization_endpoint).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.authorization_endpoint = 'overridden'
+      expect(subject.authorization_endpoint).to eq 'overridden'
+    end
+
+    context 'when not set' do
+      it 'defaults to endpoint from provider config' do
+        ep = with_valid_issuer.authorization_endpoint
+        expect(ep).to eq 'https://login.windows.net/common/oauth2/authorize'
+      end
+    end
+  end
+
+  describe '#token_endpoint' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_TOKEN_ENDPOINT', 'from env')
+      expect(subject.token_endpoint).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.token_endpoint = 'overridden'
+      expect(subject.token_endpoint).to eq 'overridden'
+    end
+
+    context 'when not set' do
+      it 'defaults to endpoint from provider config' do
+        ep = with_valid_issuer.token_endpoint
+        expect(ep).to eq 'https://login.windows.net/common/oauth2/token'
+      end
+    end
+  end
+
+  describe '#userinfo_endpoint' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_USERINFO_ENDPOINT', 'from env')
+      expect(subject.userinfo_endpoint).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.userinfo_endpoint = 'overridden'
+      expect(subject.userinfo_endpoint).to eq 'overridden'
+    end
+
+    context 'when not set' do
+      it 'defaults to endpoint from provider config' do
+        ep = with_valid_issuer.userinfo_endpoint
+        expect(ep).to eq 'https://login.windows.net/common/openid/userinfo'
+      end
+    end
+  end
+
+  describe '#public_keys' do
+    it 'retrieves public keys from provider' do
+      keys = with_valid_issuer.public_keys
+      expect(keys.first).to be_an OpenSSL::PKey::PKey
+    end
+  end
+end
