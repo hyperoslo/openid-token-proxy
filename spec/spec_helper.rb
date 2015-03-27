@@ -5,8 +5,8 @@ require File.expand_path('../../spec/dummy/config/environment.rb',  __FILE__)
 require 'pry'
 require 'rspec/rails'
 
-# # Load support files
-# Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+# Load support files
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 require 'openid_token_proxy'
 
