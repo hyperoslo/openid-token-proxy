@@ -8,7 +8,7 @@ require 'rspec/rails'
 # # Load support files
 # Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-require 'openid-token-proxy'
+require 'openid_token_proxy'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
