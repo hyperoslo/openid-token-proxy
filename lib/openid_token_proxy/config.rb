@@ -1,10 +1,7 @@
 require 'openid_connect'
-require 'singleton'
 
 module OpenIDTokenProxy
   class Config
-    include Singleton
-
     attr_accessor :client_id, :client_secret, :issuer, :resource
     attr_accessor :authorization_endpoint, :token_endpoint, :userinfo_endpoint
 
@@ -40,6 +37,10 @@ module OpenIDTokenProxy
     def public_keys
       # TODO: Allow configuration of public keys manually
       provider_config.public_keys
+    end
+
+    def self.instance
+      @instance ||= new
     end
   end
 end
