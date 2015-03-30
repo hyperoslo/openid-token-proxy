@@ -78,6 +78,7 @@ RSpec.describe OpenIDTokenProxy::Config do
 
     context 'when issuer omitted' do
       it 'raises' do
+        stub_env('OPENID_ISSUER')
         expect do
           subject.provider_config
         end.to raise_error
@@ -107,6 +108,7 @@ RSpec.describe OpenIDTokenProxy::Config do
 
     context 'when not set' do
       it 'defaults to endpoint from provider config' do
+        stub_env('OPENID_AUTHORIZATION_ENDPOINT')
         ep = with_valid_issuer.authorization_endpoint
         expect(ep).to eq 'https://login.windows.net/common/oauth2/authorize'
       end
@@ -126,6 +128,7 @@ RSpec.describe OpenIDTokenProxy::Config do
 
     context 'when not set' do
       it 'defaults to endpoint from provider config' do
+        stub_env('OPENID_TOKEN_ENDPOINT')
         ep = with_valid_issuer.token_endpoint
         expect(ep).to eq 'https://login.windows.net/common/oauth2/token'
       end
@@ -145,6 +148,7 @@ RSpec.describe OpenIDTokenProxy::Config do
 
     context 'when not set' do
       it 'defaults to endpoint from provider config' do
+        stub_env('OPENID_USERINFO_ENDPOINT')
         ep = with_valid_issuer.userinfo_endpoint
         expect(ep).to eq 'https://login.windows.net/common/openid/userinfo'
       end
