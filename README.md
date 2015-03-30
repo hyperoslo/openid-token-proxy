@@ -25,7 +25,9 @@ Soon.
 
 Add this line to your application's Gemfile:
 
-    gem 'openid-token-proxy'
+```ruby
+gem 'openid-token-proxy'
+```
 
 Or install it yourself as:
 
