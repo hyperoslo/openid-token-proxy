@@ -29,7 +29,7 @@ Add this line to your application's Gemfile:
 gem 'openid-token-proxy'
 ```
 
-Or install it yourself as:
+Or install it yourself:
 
     $ gem install openid-token-proxy
 
