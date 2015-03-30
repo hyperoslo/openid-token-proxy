@@ -18,6 +18,7 @@ module OpenIDTokenProxy
     end
 
     def provider_config
+      # TODO: Add support for refreshing provider configuration
       @provider_config ||= begin
         OpenIDConnect::Discovery::Provider::Config.discover! issuer
       end
