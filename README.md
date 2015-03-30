@@ -43,6 +43,7 @@ OpenIDTokenProxy.configure do |config|
   config.client_id = 'xxx'
   config.client_secret = 'xxx'
   config.issuer = 'https://login.windows.net/common'
+  config.redirect_uri = 'https://example.com/auth/callback'
   config.resource = 'https://graph.windows.net'
 
   # These endpoints may be omitted and will automatically be discovered by
