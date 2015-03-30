@@ -59,6 +59,7 @@ Alternatively, these environment variables will be picked up automatically:
 - `OPENID_CLIENT_ID`
 - `OPENID_CLIENT_SECRET`
 - `OPENID_ISSUER`
+- `OPENID_REDIRECT_URI`
 - `OPENID_RESOURCE`
 - `OPENID_AUTHORIZATION_ENDPOINT`
 - `OPENID_TOKEN_ENDPOINT`
