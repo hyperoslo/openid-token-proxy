@@ -43,6 +43,18 @@ RSpec.describe OpenIDTokenProxy::Config do
     end
   end
 
+  describe '#redirect_uri' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_REDIRECT_URI', 'from env')
+      expect(subject.redirect_uri).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.redirect_uri = 'overridden'
+      expect(subject.redirect_uri).to eq 'overridden'
+    end
+  end
+
   describe '#resource' do
     it 'obtains its default from environment' do
       stub_env('OPENID_RESOURCE', 'from env')
