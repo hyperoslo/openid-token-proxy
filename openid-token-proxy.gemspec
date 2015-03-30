@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.version       = OpenIDTokenProxy::VERSION
   spec.authors       = ['Tim Kurvers']
   spec.email         = ['johannes@hyper.no']
-  spec.summary       = 'Retrieves and refreshes OpenID tokens on behalf of a user when dealing with complex authentication schemes, such as client-side certificates'
+  spec.summary       = 'Retrieves and refreshes OpenID tokens on behalf of a user'
   spec.description   = 'Retrieves and refreshes OpenID tokens on behalf of a user when dealing with complex authentication schemes, such as client-side certificates'
   spec.license       = 'MIT'
 
