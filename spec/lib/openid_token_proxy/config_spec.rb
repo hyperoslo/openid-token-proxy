@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe OpenIDTokenProxy::Config do
-  subject { described_class.send(:new) }
+  subject { described_class.new }
   let(:with_valid_issuer) {
     subject.issuer = 'https://login.windows.net/common'
     subject
@@ -143,6 +143,14 @@ RSpec.describe OpenIDTokenProxy::Config do
     it 'retrieves public keys from provider' do
       keys = with_valid_issuer.public_keys
       expect(keys.first).to be_an OpenSSL::PKey::PKey
+    end
+  end
+
+  describe '::instance' do
+    it 'returns global configuration' do
+      instance = described_class.instance
+      expect(instance).to eq described_class.instance
+      expect(instance).to be_a described_class
     end
   end
 end
