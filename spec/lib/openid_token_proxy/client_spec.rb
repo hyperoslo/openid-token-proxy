@@ -7,13 +7,9 @@ RSpec.describe OpenIDTokenProxy::Client do
   let(:config) do
     OpenIDTokenProxy::Config.new do |config|
       config.client_id = 'id'
-
-      config.domain_hint = ''
-      config.prompt = ''
-      config.redirect_uri = ''
-      config.resource = ''
-
       config.authorization_endpoint = 'https://example.com/auth'
+      config.token_endpoint = 'https://example.com/token'
+      config.userinfo_endpoint = 'https://example.com/users'
     end
   end
 
