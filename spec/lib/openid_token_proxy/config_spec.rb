@@ -7,6 +7,15 @@ RSpec.describe OpenIDTokenProxy::Config do
     subject
   }
 
+  describe '#initialize' do
+    it 'yields configuration to given block' do
+      config = described_class.new do |config|
+        config.client_id = 'from-block'
+      end
+      expect(config.client_id).to eq 'from-block'
+    end
+  end
+
   describe '#client_id' do
     it 'obtains its default from environment' do
       stub_env('OPENID_CLIENT_ID', 'from env')

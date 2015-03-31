@@ -15,6 +15,8 @@ module OpenIDTokenProxy
       @authorization_endpoint = ENV['OPENID_AUTHORIZATION_ENDPOINT']
       @token_endpoint = ENV['OPENID_TOKEN_ENDPOINT']
       @userinfo_endpoint = ENV['OPENID_USERINFO_ENDPOINT']
+
+      yield self if block_given?
     end
 
     def provider_config
