@@ -73,6 +73,33 @@ RSpec.describe OpenIDTokenProxy::Client do
     end
   end
 
+  describe '#token_via_auth_code!' do
+    let(:client) { double('authorization_code=' => nil) }
+
+    before do
+      expect(subject).to receive(:new_client).and_return client
+    end
+
+    context 'when auth code could not be exchanged' do
+      it 'raises' do
+        error = Rack::OAuth2::Client::Error.new 400, {}
+        expect(client).to receive(:access_token!).and_raise error
+        expect do
+          subject.token_via_auth_code! 'malformed auth code'
+        end.to raise_error OpenIDTokenProxy::Client::AuthCodeException
+      end
+    end
+
+    context 'when auth code is valid' do
+      it 'returns token instance' do
+        access_token = double
+        expect(client).to receive(:access_token!).and_return access_token
+        token = subject.token_via_auth_code! 'valid auth code'
+        expect(token.access_token).to eq access_token
+      end
+    end
+  end
+
   describe '::instance' do
     it 'returns global client' do
       instance = described_class.instance

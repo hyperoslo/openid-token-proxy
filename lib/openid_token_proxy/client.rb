@@ -16,6 +16,18 @@ module OpenIDTokenProxy
       )
     end
 
+    # Raised when auth code could not be exchanged
+    class AuthCodeException < Exception; end
+
+    # Retrieves a token for given authorization code
+    def token_via_auth_code!(auth_code)
+      client = new_client
+      client.authorization_code = auth_code
+      Token.new(client.access_token!(:query_string))
+    rescue Rack::OAuth2::Client::Error => e
+      raise AuthCodeException.new(e.message)
+    end
+
     def new_client
       OpenIDConnect::Client.new(
         identifier:             config.client_id,
