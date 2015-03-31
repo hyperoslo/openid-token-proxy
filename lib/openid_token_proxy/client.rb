@@ -10,6 +10,8 @@ module OpenIDTokenProxy
 
     def authorization_uri
       ENV['OPENID_AUTHORIZATION_URI'] || new_client.authorization_uri(
+        domain_hint: config.domain_hint,
+        prompt: config.prompt,
         resource: config.resource
       )
     end

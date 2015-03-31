@@ -7,6 +7,12 @@ RSpec.describe OpenIDTokenProxy::Client do
   let(:config) do
     OpenIDTokenProxy::Config.new do |config|
       config.client_id = 'id'
+
+      config.domain_hint = ''
+      config.prompt = ''
+      config.redirect_uri = ''
+      config.resource = ''
+
       config.authorization_endpoint = 'https://example.com/auth'
     end
   end
@@ -35,6 +41,22 @@ RSpec.describe OpenIDTokenProxy::Client do
 
       it 'builds OpenID authorization URI' do
         expect(subject.authorization_uri).to eq expected_auth_uri
+      end
+
+      context 'when domain hint given' do
+        it 'includes domain hint' do
+          hint = SecureRandom.hex
+          config.domain_hint = hint
+          expect(subject.authorization_uri).to include "domain_hint=#{hint}"
+        end
+      end
+
+      context 'when prompt given' do
+        it 'includes prompt' do
+          prompt = SecureRandom.hex
+          config.prompt = prompt
+          expect(subject.authorization_uri).to include "prompt=#{prompt}"
+        end
       end
 
       context 'when resource given' do
