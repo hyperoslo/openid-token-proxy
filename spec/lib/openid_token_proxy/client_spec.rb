@@ -4,7 +4,12 @@ require 'securerandom'
 
 RSpec.describe OpenIDTokenProxy::Client do
   subject { described_class.new config }
-  let(:config) { OpenIDTokenProxy::Config.new }
+  let(:config) do
+    OpenIDTokenProxy::Config.new do |config|
+      config.client_id = 'id'
+      config.authorization_endpoint = 'https://example.com/auth'
+    end
+  end
 
   describe '#config' do
     it 'defaults to Config.instance' do
@@ -23,26 +28,29 @@ RSpec.describe OpenIDTokenProxy::Client do
       expect(subject.authorization_uri).to eq 'from env'
     end
 
-    context 'when resource given' do
-      it 'defaults to OpenID authorization URI' do
-        authorization_uri = subject.authorization_uri
-        expect(authorization_uri).not_to be_blank
-        expect(authorization_uri).not_to include 'resource='
-        expect(authorization_uri).not_to include 'redirect_uri='
-      end
-    end
+    context 'when not explicitly set' do
+      let(:expected_auth_uri) {
+        'https://example.com/auth?client_id=id&response_type=code&scope=openid'
+      }
 
-    context 'when resource given' do
-      it 'includes resource' do
-        config.resource = id = SecureRandom.hex
-        expect(subject.authorization_uri).to include "resource=#{id}"
+      it 'builds OpenID authorization URI' do
+        expect(subject.authorization_uri).to eq expected_auth_uri
       end
-    end
 
-    context 'when redirect_uri given' do
-      it 'includes redirect_uri' do
-        config.redirect_uri = id = SecureRandom.hex
-        expect(subject.authorization_uri).to include "redirect_uri=#{id}"
+      context 'when resource given' do
+        it 'includes resource' do
+          resource = SecureRandom.hex
+          config.resource = resource
+          expect(subject.authorization_uri).to include "resource=#{resource}"
+        end
+      end
+
+      context 'when redirect_uri given' do
+        it 'includes redirect_uri' do
+          uri = SecureRandom.hex
+          config.redirect_uri = uri
+          expect(subject.authorization_uri).to include "redirect_uri=#{uri}"
+        end
       end
     end
   end
