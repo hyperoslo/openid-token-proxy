@@ -70,6 +70,7 @@ Alternatively, these environment variables will be picked up automatically:
 - `OPENID_TOKEN_ENDPOINT`
 - `OPENID_USERINFO_ENDPOINT`
 
+
 ### Token acquirement
 
 Soon.
