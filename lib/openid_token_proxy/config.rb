@@ -2,19 +2,25 @@ require 'openid_connect'
 
 module OpenIDTokenProxy
   class Config
-    attr_accessor :client_id, :client_secret, :issuer, :redirect_uri, :resource
+    attr_accessor :client_id, :client_secret, :issuer
+    attr_accessor :domain_hint, :prompt, :redirect_uri, :resource
     attr_accessor :authorization_endpoint, :token_endpoint, :userinfo_endpoint
 
     def initialize
       @client_id = ENV['OPENID_CLIENT_ID']
       @client_secret = ENV['OPENID_CLIENT_SECRET']
       @issuer = ENV['OPENID_ISSUER']
+
+      @domain_hint = ENV['OPENID_DOMAIN_HINT']
+      @prompt = ENV['OPENID_PROMPT']
       @redirect_uri = ENV['OPENID_REDIRECT_URI']
       @resource = ENV['OPENID_RESOURCE']
 
       @authorization_endpoint = ENV['OPENID_AUTHORIZATION_ENDPOINT']
       @token_endpoint = ENV['OPENID_TOKEN_ENDPOINT']
       @userinfo_endpoint = ENV['OPENID_USERINFO_ENDPOINT']
+
+      yield self if block_given?
     end
 
     def provider_config

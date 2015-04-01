@@ -43,6 +43,9 @@ OpenIDTokenProxy.configure do |config|
   config.client_id = 'xxx'
   config.client_secret = 'xxx'
   config.issuer = 'https://login.windows.net/common'
+
+  config.domain_hint = 'example.com'
+  config.prompt = 'login'
   config.redirect_uri = 'https://example.com/auth/callback'
   config.resource = 'https://graph.windows.net'
 
@@ -59,8 +62,12 @@ Alternatively, these environment variables will be picked up automatically:
 - `OPENID_CLIENT_ID`
 - `OPENID_CLIENT_SECRET`
 - `OPENID_ISSUER`
+
+- `OPENID_DOMAIN_HINT`
+- `OPENID_PROMPT`
 - `OPENID_REDIRECT_URI`
 - `OPENID_RESOURCE`
+
 - `OPENID_AUTHORIZATION_ENDPOINT`
 - `OPENID_TOKEN_ENDPOINT`
 - `OPENID_USERINFO_ENDPOINT`
