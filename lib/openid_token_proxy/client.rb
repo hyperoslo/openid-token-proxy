@@ -17,7 +17,7 @@ module OpenIDTokenProxy
     end
 
     # Raised when auth code could not be exchanged
-    class AuthCodeException < Exception; end
+    class AuthCodeException < StandardError; end
 
     # Retrieves a token for given authorization code
     def token_via_auth_code!(auth_code)
