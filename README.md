@@ -18,7 +18,26 @@ Licensed under the **MIT** license, see LICENSE for more information.
 
 ## Background
 
-Soon.
+When using [OpenID](http://openid.net/specs/openid-connect-core-1_0.html) in
+native applications, the most common approach is to open the identity provider's
+authorization page in a web view, let the user authenticate and have the application
+hold on to access, identity and refresh tokens.
+
+![Regular OpenID flow](docs/regular-openid-flow.png?raw=1)
+
+However, the above flow may be unusable if the identity provider provides complex
+authentication schemes, such as client-side certificates.
+
+On iOS, client-side certificates stored in the system keychain [cannot be obtained due to application sandboxing](http://stackoverflow.com/questions/7648487/how-to-list-certificates-from-the-iphone-keychain-inside-my-app).
+
+On Android, one can obtain system certificates but these [can not be used within a web view](http://stackoverflow.com/questions/15588851/android-webview-with-client-certificate).
+
+![OpenID token proxy flow](docs/openid-token-proxy-flow.png?raw=1)
+
+When using OpenID token proxy, the application opens a web browser - which has
+access to client-side certificates regardless of storage location - and lets the
+user authenticate. The identity provider redirects to the OpenID token proxy,
+which in turn passes along any obtained tokens to the application.
 
 
 ## Installation
