@@ -25,9 +25,9 @@ RSpec.describe OpenIDTokenProxy::Client do
   end
 
   describe '#authorization_uri' do
-    it 'may be explicitly set through environment' do
-      stub_env('OPENID_AUTHORIZATION_URI', 'from env')
-      expect(subject.authorization_uri).to eq 'from env'
+    it 'may be explicitly set through configuration' do
+      config.authorization_uri = 'overridden'
+      expect(subject.authorization_uri).to eq 'overridden'
     end
 
     context 'when not explicitly set' do
