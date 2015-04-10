@@ -14,9 +14,9 @@ RSpec.describe OpenIDTokenProxy::Client do
   end
 
   describe '#config' do
-    it 'defaults to Config.instance' do
+    it 'defaults to OpenIDTokenProxy.config' do
       client = described_class.new
-      expect(client.config).to eq OpenIDTokenProxy::Config.instance
+      expect(client.config).to eq OpenIDTokenProxy.config
     end
 
     it 'may be given explicitly' do
