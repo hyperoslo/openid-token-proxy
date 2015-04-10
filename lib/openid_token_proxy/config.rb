@@ -46,9 +46,5 @@ module OpenIDTokenProxy
       # TODO: Allow configuration of public keys manually
       provider_config.public_keys
     end
-
-    def self.instance
-      @instance ||= new
-    end
   end
 end

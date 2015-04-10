@@ -7,7 +7,22 @@ require 'openid_token_proxy/token'
 require 'openid_token_proxy/version'
 
 module OpenIDTokenProxy
-  def self.configure
-    yield Config.instance
+  class << self
+    def configure
+      yield config
+    end
+
+    # Sets and yields a new global config for the duration of the given block
+    def configure_temporarily
+      original = config
+      @config = original.dup
+      yield @config
+    ensure
+      @config = original
+    end
+
+    def config
+      @config ||= Config.new
+    end
   end
 end

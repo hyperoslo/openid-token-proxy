@@ -170,12 +170,4 @@ RSpec.describe OpenIDTokenProxy::Config do
       expect(keys.first).to be_an OpenSSL::PKey::PKey
     end
   end
-
-  describe '::instance' do
-    it 'returns global configuration' do
-      instance = described_class.instance
-      expect(instance).to eq described_class.instance
-      expect(instance).to be_a described_class
-    end
-  end
 end
