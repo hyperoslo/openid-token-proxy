@@ -62,11 +62,14 @@ OpenIDTokenProxy.configure do |config|
   config.client_id = 'xxx'
   config.client_secret = 'xxx'
   config.issuer = 'https://login.windows.net/common'
-
-  config.domain_hint = 'example.com'
-  config.prompt = 'login'
   config.redirect_uri = 'https://example.com/auth/callback'
   config.resource = 'https://graph.windows.net'
+
+  # Indicates which domain users will presumably be signing in with
+  config.domain_hint = 'example.com'
+
+  # Whether to force authentication in case a session is already established
+  config.prompt = 'login'
 
   # These endpoints may be omitted and will automatically be discovered by
   # contacting the given issuer
