@@ -4,6 +4,7 @@ module OpenIDTokenProxy
   class Config
     attr_accessor :client_id, :client_secret, :issuer
     attr_accessor :domain_hint, :prompt, :redirect_uri, :resource
+    attr_accessor :authorization_uri
     attr_accessor :authorization_endpoint, :token_endpoint, :userinfo_endpoint
 
     def initialize
@@ -15,6 +16,8 @@ module OpenIDTokenProxy
       @prompt = ENV['OPENID_PROMPT']
       @redirect_uri = ENV['OPENID_REDIRECT_URI']
       @resource = ENV['OPENID_RESOURCE']
+
+      @authorization_uri = ENV['OPENID_AUTHORIZATION_URI']
 
       @authorization_endpoint = ENV['OPENID_AUTHORIZATION_ENDPOINT']
       @token_endpoint = ENV['OPENID_TOKEN_ENDPOINT']

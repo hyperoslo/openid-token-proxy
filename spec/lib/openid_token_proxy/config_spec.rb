@@ -76,6 +76,18 @@ RSpec.describe OpenIDTokenProxy::Config do
     end
   end
 
+  describe '#authorization_uri' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_AUTHORIZATION_URI', 'from env')
+      expect(subject.authorization_uri).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.authorization_uri = 'overridden'
+      expect(subject.authorization_uri).to eq 'overridden'
+    end
+  end
+
   describe '#provider_config' do
     context 'when valid issuer' do
       it 'loads provider configuration' do

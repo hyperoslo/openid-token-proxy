@@ -73,12 +73,16 @@ OpenIDTokenProxy.configure do |config|
   config.authorization_endpoint = 'https://login.windows.net/common/oauth2/authorize'
   config.token_endpoint = 'https://login.windows.net/common/oauth2/token'
   config.userinfo_endpoint = 'https://login.windows.net/common/openid/userinfo'
+
+  # Alternatively, you can override the authorization URI in its entirety:
+  config.authorization_uri = 'https://id.hyper.no/authorize?prompt=login'
 end
 ```
 
 Alternatively, these environment variables will be picked up automatically:
 
 - `OPENID_AUTHORIZATION_ENDPOINT`
+- `OPENID_AUTHORIZATION_URI`
 - `OPENID_CLIENT_ID`
 - `OPENID_CLIENT_SECRET`
 - `OPENID_DOMAIN_HINT`
