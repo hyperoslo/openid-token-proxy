@@ -8,6 +8,14 @@ require 'openid_token_proxy/version'
 
 module OpenIDTokenProxy
   class << self
+    def client
+      @client ||= Client.new
+    end
+
+    def config
+      @config ||= Config.new
+    end
+
     def configure
       yield config
     end
@@ -19,10 +27,6 @@ module OpenIDTokenProxy
       yield @config
     ensure
       @config = original
-    end
-
-    def config
-      @config ||= Config.new
     end
   end
 end

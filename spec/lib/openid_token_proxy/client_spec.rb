@@ -99,12 +99,4 @@ RSpec.describe OpenIDTokenProxy::Client do
       end
     end
   end
-
-  describe '::instance' do
-    it 'returns global client' do
-      instance = described_class.instance
-      expect(instance).to eq described_class.instance
-      expect(instance).to be_a described_class
-    end
-  end
 end
