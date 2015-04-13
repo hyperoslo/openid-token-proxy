@@ -2,13 +2,52 @@
 <html>
 <head>
   <title>OpenID token proxy</title>
+  <meta charset="utf8" />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <style>
+    body {
+      font: 14px 'Helvetica';
+      line-height: 1.2em;
+    }
+
+    dt {
+      font-weight: bold;
+      margin-top: 1em;
+    }
+
+    dd {
+      margin: 0 1em;
+    }
+
+    hr {
+      margin: 2em 0;
+      border: 1px solid #DDDDDD;
+    }
+  </style>
 </head>
 <body>
+  <%
+    client = OpenIDTokenProxy.client
+    config = OpenIDTokenProxy.config
+  %>
 
-<%= yield %>
+  <dl>
+    <dt>Client ID</dt>
+    <dd><%= config.client_id %></dd>
+    <dt>Client secret</dt>
+    <dd><%= config.client_secret %></dd>
+    <dt>Issuer</dt>
+    <dd><%= config.issuer %></dd>
+    <dt>Public keys</dt>
+    <dd><%= config.public_keys.count %></dd>
+    <dt>Authorization URI</dt>
+    <dd><%= client.authorization_uri %></dd>
+  </dl>
 
+  <hr />
+
+  <%= yield %>
 </body>
 </html>
