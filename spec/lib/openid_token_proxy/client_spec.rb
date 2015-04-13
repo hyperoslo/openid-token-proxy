@@ -86,7 +86,7 @@ RSpec.describe OpenIDTokenProxy::Client do
         expect(client).to receive(:access_token!).and_raise error
         expect do
           subject.token_via_auth_code! 'malformed auth code'
-        end.to raise_error OpenIDTokenProxy::Client::AuthCodeException
+        end.to raise_error OpenIDTokenProxy::Client::AuthCodeError
       end
     end
 
