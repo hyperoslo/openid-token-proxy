@@ -38,9 +38,5 @@ module OpenIDTokenProxy
         redirect_uri:           config.redirect_uri
       )
     end
-
-    def self.instance
-      @instance ||= new
-    end
   end
 end
