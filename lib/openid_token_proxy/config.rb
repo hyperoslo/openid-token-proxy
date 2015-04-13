@@ -6,6 +6,7 @@ module OpenIDTokenProxy
     attr_accessor :domain_hint, :prompt, :redirect_uri, :resource
     attr_accessor :authorization_uri
     attr_accessor :authorization_endpoint, :token_endpoint, :userinfo_endpoint
+    attr_accessor :token_acquirement_hook
 
     def initialize
       @client_id = ENV['OPENID_CLIENT_ID']
@@ -22,6 +23,8 @@ module OpenIDTokenProxy
       @authorization_endpoint = ENV['OPENID_AUTHORIZATION_ENDPOINT']
       @token_endpoint = ENV['OPENID_TOKEN_ENDPOINT']
       @userinfo_endpoint = ENV['OPENID_USERINFO_ENDPOINT']
+
+      @token_acquirement_hook = proc { }
 
       yield self if block_given?
     end
