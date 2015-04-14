@@ -23,7 +23,8 @@ module OpenIDTokenProxy
     def token_via_auth_code!(auth_code)
       client = new_client
       client.authorization_code = auth_code
-      Token.new(client.access_token!(:query_string))
+      response = client.access_token!(:query_string)
+      Token.new(response.access_token, response.refresh_token)
     rescue Rack::OAuth2::Client::Error => e
       raise AuthCodeError.new(e.message)
     end

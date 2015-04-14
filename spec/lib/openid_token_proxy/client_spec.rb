@@ -92,10 +92,11 @@ RSpec.describe OpenIDTokenProxy::Client do
 
     context 'when auth code is valid' do
       it 'returns token instance' do
-        access_token = double
+        access_token = double(access_token: 'access token', refresh_token: 'refresh token')
         expect(client).to receive(:access_token!).and_return access_token
         token = subject.token_via_auth_code! 'valid auth code'
-        expect(token.access_token).to eq access_token
+        expect(token.access_token).to eq 'access token'
+        expect(token.refresh_token).to eq 'refresh token'
       end
     end
   end
