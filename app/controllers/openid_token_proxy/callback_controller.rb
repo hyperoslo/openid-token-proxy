@@ -8,7 +8,7 @@ module OpenIDTokenProxy
 
       begin
         token = OpenIDTokenProxy.client.token_via_auth_code!(code)
-      rescue OpenIDTokenProxy::Client::AuthCodeException => error
+      rescue OpenIDTokenProxy::Client::AuthCodeError => error
         # Rescued here and passed into the token acquirement hook below
       end
 
