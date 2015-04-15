@@ -105,4 +105,50 @@ RSpec.describe OpenIDTokenProxy::Client do
       end
     end
   end
+
+  describe '#decode_token!' do
+    context 'when token is omitted' do
+      it 'raises' do
+        expect do
+          subject.decode_token! ''
+        end.to raise_error OpenIDTokenProxy::Client::TokenRequired
+      end
+    end
+
+    context 'when token is malformed' do
+      it 'raises' do
+        expect do
+          subject.decode_token! 'malformed token'
+        end.to raise_error OpenIDTokenProxy::Client::TokenMalformed
+      end
+    end
+
+    context 'when token is well-formed' do
+      context 'with invalid signature or missing public keys' do
+        it 'raises' do
+          expect do
+            expect(config).to receive(:public_keys).and_return []
+            subject.decode_token! 'well-formed token'
+          end.to raise_error OpenIDTokenProxy::Client::TokenInvalid
+        end
+      end
+
+      context 'with valid signature' do
+        it 'returns token with an identity token' do
+          object = double(raw_attributes: {
+            iss: double,
+            sub: double,
+            aud: double,
+            exp: double,
+            iat: double
+          })
+          expect(OpenIDConnect::RequestObject).to receive(:decode).and_return object
+          token = subject.decode_token! 'valid token'
+          expect(token).to be_an OpenIDTokenProxy::Token
+          expect(token.access_token).to eq 'valid token'
+          expect(token.id_token).to be_an OpenIDConnect::ResponseObject::IdToken
+        end
+      end
+    end
+  end
 end
