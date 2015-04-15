@@ -1,9 +1,10 @@
 module OpenIDTokenProxy
   class Token
-    attr_accessor :access_token, :refresh_token
+    attr_accessor :access_token, :id_token, :refresh_token
 
-    def initialize(access_token, refresh_token = nil)
+    def initialize(access_token, id_token = nil, refresh_token = nil)
       @access_token = access_token
+      @id_token = id_token
       @refresh_token = refresh_token
     end
 
