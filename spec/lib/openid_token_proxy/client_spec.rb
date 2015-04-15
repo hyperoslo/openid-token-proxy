@@ -7,6 +7,7 @@ RSpec.describe OpenIDTokenProxy::Client do
   let(:config) do
     OpenIDTokenProxy::Config.new do |config|
       config.client_id = 'id'
+      config.issuer = 'https://example.com'
       config.authorization_endpoint = 'https://example.com/auth'
       config.token_endpoint = 'https://example.com/token'
       config.userinfo_endpoint = 'https://example.com/users'
@@ -107,6 +108,10 @@ RSpec.describe OpenIDTokenProxy::Client do
   end
 
   describe '#decode_token!' do
+    before do
+      allow(config).to receive(:public_keys).and_return [double]
+    end
+
     context 'when token is omitted' do
       it 'raises' do
         expect do
