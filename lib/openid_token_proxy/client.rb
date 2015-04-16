@@ -42,22 +42,20 @@ module OpenIDTokenProxy
     def decode_token!(access_token)
       raise TokenRequired if access_token.blank?
 
-      begin
-        config.public_keys.each do |key|
-          begin
-            object = OpenIDConnect::RequestObject.decode(access_token, key)
-          rescue JSON::JWT::VerificationFailed
-            # Iterate through remaining public keys (if any)
-            # Raises TokenInvalid if none applied (see below)
-          else
-            id_token = OpenIDConnect::ResponseObject::IdToken.new(object.raw_attributes)
-            token = Token.new(access_token)
-            token.id_token = id_token
-            return token
-          end
+      config.public_keys.each do |key|
+        begin
+          object = OpenIDConnect::RequestObject.decode(access_token, key)
+        rescue JSON::JWT::InvalidFormat => e
+          raise TokenMalformed.new(e.message)
+        rescue JSON::JWT::VerificationFailed
+          # Iterate through remaining public keys (if any)
+          # Raises TokenInvalid if none applied (see below)
+        else
+          id_token = OpenIDConnect::ResponseObject::IdToken.new(object.raw_attributes)
+          token = Token.new(access_token)
+          token.id_token = id_token
+          return token
         end
-      rescue JSON::JWT::InvalidFormat => e
-        raise TokenMalformed.new(e.message)
       end
 
       raise TokenInvalid
