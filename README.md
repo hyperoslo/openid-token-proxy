@@ -71,11 +71,14 @@ OpenIDTokenProxy.configure do |config|
   # Whether to force authentication in case a session is already established
   config.prompt = 'login'
 
-  # These endpoints may be omitted and will automatically be discovered by
-  # contacting the given issuer
+  # If these endpoints or public keys are not configured explicitly, they will be
+  # discovered automatically by contacting the issuer (see above)
   config.authorization_endpoint = 'https://login.windows.net/common/oauth2/authorize'
   config.token_endpoint = 'https://login.windows.net/common/oauth2/token'
   config.userinfo_endpoint = 'https://login.windows.net/common/openid/userinfo'
+  config.public_keys = [
+    OpenSSL::PKey::RSA.new("-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9...")
+  ]
 
   # Alternatively, you can override the authorization URI in its entirety:
   config.authorization_uri = 'https://id.hyper.no/authorize?prompt=login'
