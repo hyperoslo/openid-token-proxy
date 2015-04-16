@@ -177,9 +177,16 @@ RSpec.describe OpenIDTokenProxy::Config do
   end
 
   describe '#public_keys' do
-    it 'retrieves public keys from provider' do
-      keys = with_valid_issuer.public_keys
-      expect(keys.first).to be_an OpenSSL::PKey::PKey
+    it 'may be set explicitly' do
+      subject.public_keys = []
+      expect(subject.public_keys).to eq []
+    end
+
+    context 'when not set' do
+      it 'retrieves public keys from provider' do
+        keys = with_valid_issuer.public_keys
+        expect(keys.first).to be_an OpenSSL::PKey::PKey
+      end
     end
   end
 end
