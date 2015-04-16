@@ -7,6 +7,7 @@ module OpenIDTokenProxy
     attr_accessor :authorization_uri
     attr_accessor :authorization_endpoint, :token_endpoint, :userinfo_endpoint
     attr_accessor :token_acquirement_hook
+    attr_accessor :public_keys
 
     def initialize
       @client_id = ENV['OPENID_CLIENT_ID']
@@ -49,8 +50,7 @@ module OpenIDTokenProxy
     end
 
     def public_keys
-      # TODO: Allow configuration of public keys manually
-      provider_config.public_keys
+      @public_keys ||= provider_config.public_keys
     end
   end
 end
