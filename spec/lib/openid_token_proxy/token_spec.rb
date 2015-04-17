@@ -10,10 +10,12 @@ RSpec.describe OpenIDTokenProxy::Token do
   end
 
   describe '::decode!' do
+    let(:keys) { [double] }
+
     context 'when token is omitted' do
       it 'raises' do
         expect do
-          described_class.decode! ''
+          described_class.decode! '', keys
         end.to raise_error OpenIDTokenProxy::Token::TokenRequired
       end
     end
@@ -21,7 +23,7 @@ RSpec.describe OpenIDTokenProxy::Token do
     context 'when token is malformed' do
       it 'raises' do
         expect do
-          described_class.decode! 'malformed token'
+          described_class.decode! 'malformed token', keys
         end.to raise_error OpenIDTokenProxy::Token::TokenMalformed
       end
     end
@@ -45,7 +47,7 @@ RSpec.describe OpenIDTokenProxy::Token do
             iat: double
           })
           expect(OpenIDConnect::RequestObject).to receive(:decode).and_return object
-          token = described_class.decode! 'valid token'
+          token = described_class.decode! 'valid token', keys
           expect(token).to be_an OpenIDTokenProxy::Token
           expect(token.access_token).to eq 'valid token'
           expect(token.id_token).to be_an OpenIDConnect::ResponseObject::IdToken
