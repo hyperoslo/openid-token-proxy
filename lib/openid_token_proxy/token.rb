@@ -13,24 +13,24 @@ module OpenIDTokenProxy
     end
 
     # Raised when a token was not provided
-    class TokenRequired < StandardError; end
+    class Required < Error; end
 
     # Raised when a token could not be decoded
-    class TokenMalformed < StandardError; end
+    class Malformed < Error; end
 
     # Raised when a token's signature could not be validated
-    class TokenInvalid < StandardError; end
+    class InvalidSignature < Error; end
 
     # Decodes given access token and validates its signature by public key(s)
     # Use :skip_verification as second argument to skip signature validation
     def self.decode!(access_token, keys = OpenIDTokenProxy.config.public_keys)
-      raise TokenRequired if access_token.blank?
+      raise Required if access_token.blank?
 
       Array(keys).each do |key|
         begin
           object = OpenIDConnect::RequestObject.decode(access_token, key)
         rescue JSON::JWT::InvalidFormat => e
-          raise TokenMalformed.new(e.message)
+          raise Malformed.new(e.message)
         rescue JSON::JWT::VerificationFailed
           # Iterate through remaining public keys (if any)
           # Raises TokenInvalid if none applied (see below)
@@ -42,7 +42,7 @@ module OpenIDTokenProxy
         end
       end
 
-      raise TokenInvalid
+      raise InvalidSignature
     end
   end
 end

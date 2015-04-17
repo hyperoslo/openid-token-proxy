@@ -16,7 +16,7 @@ RSpec.describe OpenIDTokenProxy::Token do
       it 'raises' do
         expect do
           described_class.decode! '', keys
-        end.to raise_error OpenIDTokenProxy::Token::TokenRequired
+        end.to raise_error OpenIDTokenProxy::Token::Required
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe OpenIDTokenProxy::Token do
       it 'raises' do
         expect do
           described_class.decode! 'malformed token', keys
-        end.to raise_error OpenIDTokenProxy::Token::TokenMalformed
+        end.to raise_error OpenIDTokenProxy::Token::Malformed
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe OpenIDTokenProxy::Token do
         it 'raises' do
           expect do
             described_class.decode! 'well-formed token', []
-          end.to raise_error OpenIDTokenProxy::Token::TokenInvalid
+          end.to raise_error OpenIDTokenProxy::Token::InvalidSignature
         end
       end
 
