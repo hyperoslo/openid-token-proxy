@@ -29,38 +29,6 @@ module OpenIDTokenProxy
       raise AuthCodeError.new(e.message)
     end
 
-    # Raised when a token was not provided
-    class TokenRequired < StandardError; end
-
-    # Raised when a token could not be decoded
-    class TokenMalformed < StandardError; end
-
-    # Raised when a token's signature could not be validated
-    class TokenInvalid < StandardError; end
-
-    # Decodes given access token and validates its signature
-    def decode_token!(access_token)
-      raise TokenRequired if access_token.blank?
-
-      config.public_keys.each do |key|
-        begin
-          object = OpenIDConnect::RequestObject.decode(access_token, key)
-        rescue JSON::JWT::InvalidFormat => e
-          raise TokenMalformed.new(e.message)
-        rescue JSON::JWT::VerificationFailed
-          # Iterate through remaining public keys (if any)
-          # Raises TokenInvalid if none applied (see below)
-        else
-          id_token = OpenIDConnect::ResponseObject::IdToken.new(object.raw_attributes)
-          token = Token.new(access_token)
-          token.id_token = id_token
-          return token
-        end
-      end
-
-      raise TokenInvalid
-    end
-
     def new_client
       OpenIDConnect::Client.new(
         identifier:             config.client_id,
