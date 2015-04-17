@@ -11,7 +11,7 @@ RSpec.describe OpenIDTokenProxy::CallbackController, type: :controller do
     it 'returns 400 BAD REQUEST' do
       get :handle
       expect(response.body).to be_blank
-      expect(response.status).to eq 400
+      expect(response).to have_http_status :bad_request
     end
   end
 

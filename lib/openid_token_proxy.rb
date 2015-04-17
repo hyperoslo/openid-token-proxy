@@ -1,5 +1,9 @@
 require File.expand_path('../../config/initializers/inflections', __FILE__)
 
+require 'openid_connect'
+
+require 'openid_token_proxy/error'
+
 require 'openid_token_proxy/client'
 require 'openid_token_proxy/config'
 require 'openid_token_proxy/engine'
