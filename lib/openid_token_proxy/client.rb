@@ -1,5 +1,3 @@
-require 'openid_connect'
-
 module OpenIDTokenProxy
   class Client
     attr_reader :config
@@ -17,7 +15,7 @@ module OpenIDTokenProxy
     end
 
     # Raised when auth code could not be exchanged
-    class AuthCodeError < StandardError; end
+    class AuthCodeError < Error; end
 
     # Retrieves a token for given authorization code
     def token_via_auth_code!(auth_code)
