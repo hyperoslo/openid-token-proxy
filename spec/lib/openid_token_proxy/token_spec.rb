@@ -25,6 +25,53 @@ RSpec.describe OpenIDTokenProxy::Token do
     end
   end
 
+  describe '#validate!' do
+    context 'when token has expired' do
+      let(:expiry_date) { 2.hours.ago }
+
+      it 'raises' do
+        expect do
+          subject.validate!
+        end.to raise_error OpenIDTokenProxy::Token::Expired
+      end
+    end
+
+    context 'when application differs' do
+      it 'raises' do
+        expect do
+          subject.validate! client_id: 'invalid client ID'
+        end.to raise_error OpenIDTokenProxy::Token::InvalidApplication
+      end
+    end
+
+    context 'when audience differs' do
+      it 'raises' do
+        expect do
+          subject.validate! audience: 'invalid audience'
+        end.to raise_error OpenIDTokenProxy::Token::InvalidAudience
+      end
+    end
+
+    context 'when issuer differs' do
+      it 'raises' do
+        expect do
+          subject.validate! issuer: 'invalid issuer'
+        end.to raise_error OpenIDTokenProxy::Token::InvalidIssuer
+      end
+    end
+
+    context 'when all is well' do
+      it 'returns true' do
+        assertions = {
+          audience: audience,
+          client_id: client_id,
+          issuer: issuer
+        }
+        expect(subject.validate! assertions).to be_truthy
+      end
+    end
+  end
+
   describe '#expired?' do
     context 'when token has expired' do
       let(:expiry_date) { 2.hours.ago }
