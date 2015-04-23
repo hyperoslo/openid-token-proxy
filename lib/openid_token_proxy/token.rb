@@ -1,3 +1,7 @@
+require 'openid_token_proxy/token/malformed'
+require 'openid_token_proxy/token/required'
+require 'openid_token_proxy/token/invalid_signature'
+
 module OpenIDTokenProxy
   class Token
     attr_accessor :access_token, :id_token, :refresh_token
@@ -11,15 +15,6 @@ module OpenIDTokenProxy
     def to_s
       @access_token
     end
-
-    # Raised when a token was not provided
-    class Required < Error; end
-
-    # Raised when a token could not be decoded
-    class Malformed < Error; end
-
-    # Raised when a token's signature could not be validated
-    class InvalidSignature < Error; end
 
     # Decodes given access token and validates its signature by public key(s)
     # Use :skip_verification as second argument to skip signature validation
