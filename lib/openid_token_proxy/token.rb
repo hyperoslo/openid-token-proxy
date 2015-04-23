@@ -20,6 +20,10 @@ module OpenIDTokenProxy
       @access_token
     end
 
+    def expired?
+      id_token.exp.to_i <= Time.now.to_i
+    end
+
     # Decodes given access token and validates its signature by public key(s)
     # Use :skip_verification as second argument to skip signature validation
     def self.decode!(access_token, keys = OpenIDTokenProxy.config.public_keys)

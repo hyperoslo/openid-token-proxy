@@ -1,11 +1,38 @@
 require 'spec_helper'
 
 RSpec.describe OpenIDTokenProxy::Token do
-  subject { described_class.new 'access token' }
+  subject { described_class.new 'access token', id_token }
+
+  let(:audience) { 'audience' }
+  let(:client_id) { 'client ID' }
+  let(:issuer) { 'issuer' }
+  let(:expiry_date) { 2.hours.from_now }
+
+  let(:id_token) {
+    double(
+      exp: expiry_date,
+      aud: audience,
+      iss: issuer,
+      raw_attributes: {
+        'appid' => client_id
+      }
+    )
+  }
 
   describe '#to_s' do
     it 'returns access token' do
       expect(subject.to_s).to eq 'access token'
+    end
+  end
+
+  describe '#expired?' do
+    context 'when token has expired' do
+      let(:expiry_date) { 2.hours.ago }
+      it { should be_expired }
+    end
+
+    context 'when token has not yet expired' do
+      it { should_not be_expired }
     end
   end
 
