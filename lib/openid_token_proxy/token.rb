@@ -1,3 +1,7 @@
+require 'openid_token_proxy/token/expired'
+require 'openid_token_proxy/token/invalid_application'
+require 'openid_token_proxy/token/invalid_audience'
+require 'openid_token_proxy/token/invalid_issuer'
 require 'openid_token_proxy/token/malformed'
 require 'openid_token_proxy/token/required'
 require 'openid_token_proxy/token/unverifiable_signature'
