@@ -39,7 +39,7 @@ RSpec.describe OpenIDTokenProxy::Token do
     context 'when application differs' do
       it 'raises' do
         expect do
-          subject.validate! client_id: 'invalid client ID'
+          subject.validate! client_id: 'expected client ID'
         end.to raise_error OpenIDTokenProxy::Token::InvalidApplication
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe OpenIDTokenProxy::Token do
     context 'when audience differs' do
       it 'raises' do
         expect do
-          subject.validate! audience: 'invalid audience'
+          subject.validate! audience: 'expected audience'
         end.to raise_error OpenIDTokenProxy::Token::InvalidAudience
       end
     end
@@ -55,7 +55,7 @@ RSpec.describe OpenIDTokenProxy::Token do
     context 'when issuer differs' do
       it 'raises' do
         expect do
-          subject.validate! issuer: 'invalid issuer'
+          subject.validate! issuer: 'expected issuer'
         end.to raise_error OpenIDTokenProxy::Token::InvalidIssuer
       end
     end
