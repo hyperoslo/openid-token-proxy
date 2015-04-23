@@ -1,6 +1,6 @@
 require 'openid_token_proxy/token/malformed'
 require 'openid_token_proxy/token/required'
-require 'openid_token_proxy/token/invalid_signature'
+require 'openid_token_proxy/token/unverifiable_signature'
 
 module OpenIDTokenProxy
   class Token
@@ -37,7 +37,7 @@ module OpenIDTokenProxy
         end
       end
 
-      raise InvalidSignature
+      raise UnverifiableSignature
     end
   end
 end
