@@ -8,9 +8,9 @@ RSpec.describe OpenIDTokenProxy::CallbackController, type: :controller do
   let(:token) { double(access_token: access_token) }
 
   context 'when authorization code is missing' do
-    it 'returns 400 BAD REQUEST' do
+    it 'results in 400 BAD REQUEST with error message' do
       get :handle
-      expect(response.body).to be_blank
+      expect(response.body).to eq "Required parameter 'code' missing."
       expect(response).to have_http_status :bad_request
     end
   end

@@ -2,7 +2,7 @@ module OpenIDTokenProxy
   class CallbackController < ApplicationController
     def handle
       unless code = params[:code]
-        render nothing: true, status: :bad_request
+        render text: "Required parameter 'code' missing.", status: :bad_request
         return
       end
 
