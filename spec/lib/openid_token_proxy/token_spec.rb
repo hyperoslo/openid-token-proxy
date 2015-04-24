@@ -33,7 +33,7 @@ RSpec.describe OpenIDTokenProxy::Token do
         it 'raises' do
           expect do
             described_class.decode! 'well-formed token', []
-          end.to raise_error OpenIDTokenProxy::Token::InvalidSignature
+          end.to raise_error OpenIDTokenProxy::Token::UnverifiableSignature
         end
       end
 
