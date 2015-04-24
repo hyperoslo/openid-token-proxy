@@ -25,6 +25,12 @@ RSpec.describe OpenIDTokenProxy::Token do
     end
   end
 
+  describe '#[]' do
+    it 'retrieves identity attributes' do
+      expect(subject['appid']).to eq client_id
+    end
+  end
+
   describe '#validate!' do
     context 'when token has expired' do
       let(:expiry_date) { 2.hours.ago }

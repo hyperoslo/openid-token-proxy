@@ -20,6 +20,11 @@ module OpenIDTokenProxy
       @access_token
     end
 
+    # Retrieves data from identity attributes
+    def [](key)
+      id_token.raw_attributes[key]
+    end
+
     # Validates this token's expiration state, application, audience and issuer
     def validate!(assertions = {})
       raise Expired if expired?
