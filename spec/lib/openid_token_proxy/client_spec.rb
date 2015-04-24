@@ -8,6 +8,9 @@ RSpec.describe OpenIDTokenProxy::Client do
     OpenIDTokenProxy::Config.new do |config|
       config.client_id = 'id'
       config.issuer = 'https://example.com'
+      config.resource = nil
+      config.domain_hint = nil
+      config.prompt = nil
       config.authorization_endpoint = 'https://example.com/auth'
       config.token_endpoint = 'https://example.com/token'
       config.userinfo_endpoint = 'https://example.com/users'
