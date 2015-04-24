@@ -1,3 +1,7 @@
+require 'openid_token_proxy/token/expired'
+require 'openid_token_proxy/token/invalid_application'
+require 'openid_token_proxy/token/invalid_audience'
+require 'openid_token_proxy/token/invalid_issuer'
 require 'openid_token_proxy/token/malformed'
 require 'openid_token_proxy/token/required'
 require 'openid_token_proxy/token/unverifiable_signature'
@@ -14,6 +18,34 @@ module OpenIDTokenProxy
 
     def to_s
       @access_token
+    end
+
+    # Validates this token's expiration state, application, audience and issuer
+    def validate!(assertions = {})
+      raise Expired if expired?
+
+      # TODO: Nonce validation
+
+      if assertions[:audience]
+        audiences = Array(id_token.aud)
+        raise InvalidAudience unless audiences.include? assertions[:audience]
+      end
+
+      if assertions[:client_id]
+        appid = id_token.raw_attributes['appid']
+        raise InvalidApplication if appid && appid != assertions[:client_id]
+      end
+
+      if assertions[:issuer]
+        issuer = id_token.iss
+        raise InvalidIssuer unless issuer == assertions[:issuer]
+      end
+
+      true
+    end
+
+    def expired?
+      id_token.exp.to_i <= Time.now.to_i
     end
 
     # Decodes given access token and validates its signature by public key(s)
