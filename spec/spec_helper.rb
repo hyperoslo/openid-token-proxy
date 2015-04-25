@@ -5,7 +5,9 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter
 ]
-SimpleCov.start
+SimpleCov.start do
+  add_filter '/spec/dummy/config/initializers'
+end
 
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../../spec/dummy/config/environment.rb',  __FILE__)
