@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe ApplicationController, type: :controller do
+  let(:authorization_uri) { 'https://id.hyper.no/authorize' }
+  let(:token) { double(validate!: true) }
+
+  before do
+    allow(OpenIDTokenProxy::Token).to receive(:decode!).and_return token
+  end
+
   controller do
     include OpenIDTokenProxy::Authentication
 
@@ -14,16 +21,17 @@ RSpec.describe ApplicationController, type: :controller do
 
   context 'when token proxy errors are encountered' do
     it 'results in 401 UNAUTHORIZED with authorization URI' do
-      get :index, error: true
+      OpenIDTokenProxy.configure_temporarily do |config|
+        config.authorization_uri = authorization_uri
+        get :index, error: true
+      end
       expect(response).to have_http_status :unauthorized
-      expect(response.headers).to have_key 'X-Authorization-URI'
+      expect(response.headers['X-Authorization-URI']).to eq authorization_uri
     end
   end
 
   context 'when no token proxy errors are encountered' do
     it 'executes actions normally' do
-      token = double(validate!: true)
-      expect(controller).to receive(:current_token).and_return token
       get :index
       expect(response).to have_http_status :ok
     end
@@ -31,8 +39,6 @@ RSpec.describe ApplicationController, type: :controller do
 
   describe '#current_token' do
     it 'returns current valid token' do
-      token = double
-      expect(OpenIDTokenProxy::Token).to receive(:decode!).and_return token
       expect(controller.current_token).to eq token
     end
   end
