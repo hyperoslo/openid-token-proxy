@@ -29,9 +29,11 @@ module OpenIDTokenProxy
     def configure_temporarily
       original = config
       @config = original.dup
+      client.config = @config
       yield @config
     ensure
       @config = original
+      client.config = @config
     end
   end
 end

@@ -1,6 +1,6 @@
 module OpenIDTokenProxy
   class Client
-    attr_reader :config
+    attr_accessor :config
 
     def initialize(config = OpenIDTokenProxy.config)
       @config = config
