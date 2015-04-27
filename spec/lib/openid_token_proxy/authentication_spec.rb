@@ -20,13 +20,13 @@ RSpec.describe ApplicationController, type: :controller do
   end
 
   context 'when token proxy errors are encountered' do
-    it 'results in 401 UNAUTHORIZED with authorization URI' do
+    it 'results in 401 UNAUTHORIZED with authentication URI' do
       OpenIDTokenProxy.configure_temporarily do |config|
         config.authorization_uri = authorization_uri
         get :index, error: true
       end
       expect(response).to have_http_status :unauthorized
-      expect(response.headers['X-Authorization-URI']).to eq authorization_uri
+      expect(response.headers['X-Authentication-URL']).to eq authorization_uri
     end
   end
 

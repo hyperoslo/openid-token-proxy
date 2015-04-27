@@ -16,13 +16,13 @@ module OpenIDTokenProxy
       end
     end
 
-    def set_authorization_uri!
+    def set_authentication_url!
       uri = OpenIDTokenProxy.client.authorization_uri
-      response.headers['X-Authorization-URI'] = uri
+      response.headers['X-Authentication-URL'] = uri
     end
 
     def require_authorization(exception)
-      set_authorization_uri!
+      set_authentication_url!
       render json: exception.to_json, status: :unauthorized
     end
 
