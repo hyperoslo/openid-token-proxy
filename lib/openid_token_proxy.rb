@@ -4,6 +4,7 @@ require 'openid_connect'
 
 require 'openid_token_proxy/error'
 
+require 'openid_token_proxy/authentication'
 require 'openid_token_proxy/client'
 require 'openid_token_proxy/config'
 require 'openid_token_proxy/engine'
@@ -28,9 +29,11 @@ module OpenIDTokenProxy
     def configure_temporarily
       original = config
       @config = original.dup
+      client.config = @config
       yield @config
     ensure
       @config = original
+      client.config = @config
     end
   end
 end

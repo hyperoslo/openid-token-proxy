@@ -1,1 +1,23 @@
 Visit <a href="<%= OpenIDTokenProxy.client.authorization_uri %>"> authorization URI</a> and sign in.
+
+<% if raw_token %>
+  <hr />
+
+  <dl>
+    <dt>Token</dt>
+    <dd><%= current_token %></dd>
+  </dl>
+
+  <hr />
+
+  <%= link_to 'Use your token', account_path(token: current_token) %> for API authentication.
+
+  <hr />
+
+  <dd>
+    <% current_token.id_token.raw_attributes.each_pair do |key, value| %>
+      <dt><%= key.humanize %></dt>
+      <dd><%= value %></dd>
+    <% end %>
+  </dl>
+<% end %>
