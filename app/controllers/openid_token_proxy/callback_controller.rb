@@ -9,11 +9,13 @@ module OpenIDTokenProxy
       begin
         token = OpenIDTokenProxy.client.token_via_auth_code!(code)
       rescue OpenIDTokenProxy::Client::AuthCodeError => error
-        # Rescued here and passed into the token acquirement hook below
+        render text: "Could not exchange authorization code: #{error.message}.",
+               status: :bad_request
+        return
       end
 
       config = OpenIDTokenProxy.config
-      uri = instance_exec token, error, &config.token_acquirement_hook
+      uri = instance_exec token, &config.token_acquirement_hook
       redirect_to uri || main_app.root_url unless performed?
     end
   end
