@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ApplicationController, type: :controller do
+RSpec.describe OpenIDTokenProxy::Authentication, type: :controller do
   let(:authorization_uri) { 'https://id.hyper.no/authorize' }
   let(:token) { double(validate!: true) }
 
@@ -8,7 +8,7 @@ RSpec.describe ApplicationController, type: :controller do
     allow(OpenIDTokenProxy::Token).to receive(:decode!).and_return token
   end
 
-  controller do
+  controller(ApplicationController) do
     include OpenIDTokenProxy::Authentication
 
     require_valid_token
