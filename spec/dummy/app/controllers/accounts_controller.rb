@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  include OpenIDTokenProxy::Authentication
+  include OpenIDTokenProxy::Token::Authentication
 
   require_valid_token
 
