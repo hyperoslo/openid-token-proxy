@@ -13,6 +13,9 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
   before do
     expect(token).to receive(:validate!).and_raise OpenIDTokenProxy::Token::Expired
     expect(OpenIDTokenProxy::Token).to receive(:decode!).and_return token
+    allow(OpenIDTokenProxy.client).to receive(:retrieve_token!).with(
+      refresh_token: refresh_token
+    ).and_return refreshed_token
   end
 
   controller(ApplicationController) do
@@ -44,9 +47,6 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
 
     context 'when token was refreshed successfully' do
       it 'executes actions normally returning new tokens as headers' do
-        expect(OpenIDTokenProxy.client).to receive(:retrieve_token!).with(
-          refresh_token: refresh_token
-        ).and_return refreshed_token
         get :index, refresh_token: refresh_token
         expect(response).to have_http_status :ok
         expect(response.body).to eq 'Refresh successful'
