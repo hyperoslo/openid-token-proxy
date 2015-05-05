@@ -9,6 +9,7 @@ require 'openid_token_proxy/config'
 require 'openid_token_proxy/engine'
 require 'openid_token_proxy/token'
 require 'openid_token_proxy/token/authentication'
+require 'openid_token_proxy/token/refresh'
 require 'openid_token_proxy/version'
 
 module OpenIDTokenProxy
