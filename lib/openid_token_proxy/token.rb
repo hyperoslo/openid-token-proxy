@@ -12,6 +12,9 @@ module OpenIDTokenProxy
 
     def initialize(access_token, id_token = nil, refresh_token = nil)
       @access_token = access_token
+      if id_token.is_a? Hash
+        id_token = OpenIDConnect::ResponseObject::IdToken.new(id_token)
+      end
       @id_token = id_token
       @refresh_token = refresh_token
     end
@@ -67,10 +70,7 @@ module OpenIDTokenProxy
           # Iterate through remaining public keys (if any)
           # Raises TokenInvalid if none applied (see below)
         else
-          id_token = OpenIDConnect::ResponseObject::IdToken.new(object.raw_attributes)
-          token = Token.new(access_token)
-          token.id_token = id_token
-          return token
+          return Token.new(access_token, object.raw_attributes)
         end
       end
 
