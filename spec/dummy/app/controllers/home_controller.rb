@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  include OpenIDTokenProxy::Authentication
+  include OpenIDTokenProxy::Token::Authentication
 
   def index
   end
