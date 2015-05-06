@@ -116,9 +116,8 @@ of your OpenID application on the issuer so that any authorization requests are
 routed back to your application.
 
 The proxy itself also needs to be configured with a redirect URL in order for it
-to know what to do with any newly obtained tokens.
-
-To boot back into a native applicaton one could use custom URL schemes or intents:
+to know what to do with any newly obtained tokens. To boot back into a native
+applicaton one could use custom URL schemes or intents:
 
 ```ruby
 OpenIDTokenProxy.configure do |config|
