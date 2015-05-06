@@ -102,10 +102,56 @@ Alternatively, these environment variables will be picked up automatically:
 
 ### Token acquirement
 
-Soon.
+OpenID token proxy's main task is to obtain tokens on behalf of users. To allow it
+to do so, start by mounting the engine in your Rails application:
+
+```ruby
+Rails.application.routes.draw do
+  mount OpenIDTokenProxy::Engine, at: '/auth'
+end
+```
+
+Next, register the engine's callback-route (`/auth/callback`) as the redirect URL
+of your OpenID application on the issuer so that any authorization requests are
+routed back to your application.
+
+The proxy itself also needs to be configured with a redirect URL in order for it
+to know what to do with any newly obtained tokens.
+
+To boot back into a native applicaton one could use custom URL schemes or intents:
+
+```ruby
+OpenIDTokenProxy.configure do |config|
+  config.token_acquirement_hook = proc { |token|
+    "my-app://?token=#{token}&refresh_token=#{token.refresh_token}"
+  }
+end
+```
 
 
-### Authentication
+### Token authentication
+
+Additionally, OpenID token proxy ships with an authentication component simplifying
+token validation for use in APIs:
+
+```ruby
+class AccountsController < ApplicationController
+  include OpenIDTokenProxy::Token::Authentication
+
+  require_valid_token
+
+  ...
+end
+```
+
+Access tokens may be provided as follows:
+
+- `X-Token` header.
+- `Authorization: Bearer <token>` header.
+- Query string parameter `token`.
+
+
+### Token refreshing
 
 Soon.
 
