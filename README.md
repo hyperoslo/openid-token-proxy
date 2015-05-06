@@ -130,7 +130,7 @@ end
 
 ### Token authentication
 
-Additionally, OpenID token proxy ships with an authentication component simplifying
+Additionally, OpenID token proxy ships with an authentication module simplifying
 token validation for use in APIs:
 
 ```ruby
@@ -152,7 +152,36 @@ Access tokens may be provided with one of the following:
 
 ### Token refreshing
 
-Soon.
+Most identity providers issue access tokens [with short lifespans](http://openid.net/specs/openid-connect-core-1_0.html#TokenLifetime).
+To prevent users from having to authenticate often, refresh tokens are used to
+obtain new access tokens without user intervention.
+
+OpenID token proxy's token refresh module does just that:
+
+```ruby
+class AccountsController < ApplicationController
+  include OpenIDTokenProxy::Token::Authentication
+  include OpenIDTokenProxy::Token::Refresh
+
+  require_valid_token
+
+  ...
+end
+```
+
+Refresh tokens may be provided with one of the following:
+
+- `X-Refresh-Token` header.
+- Query string parameter `refresh_token`.
+
+Whenever an access token has expired and a refresh token is given, the module will
+attempt to obtain a new token transparently.
+
+The following headers will be present on the API response if, *and only if*, a new
+token was obtained:
+
+- `X-Token` header containing the new access token to be used in future requests.
+- `X-Refresh-Token` header containing the new refresh token.
 
 
 ## Contributing
