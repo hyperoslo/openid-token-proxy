@@ -7,7 +7,7 @@ module OpenIDTokenProxy
       end
 
       begin
-        token = OpenIDTokenProxy.client.token_via_auth_code!(code)
+        token = OpenIDTokenProxy.client.retrieve_token!(auth_code: code)
       rescue OpenIDTokenProxy::Client::AuthCodeError => error
         render text: "Could not exchange authorization code: #{error.message}.",
                status: :bad_request

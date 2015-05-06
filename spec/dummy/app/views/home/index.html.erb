@@ -6,11 +6,13 @@ Visit <a href="<%= OpenIDTokenProxy.client.authorization_uri %>"> authorization 
   <dl>
     <dt>Token</dt>
     <dd><%= current_token %></dd>
+    <dt>Refresh token</dt>
+    <dd><%= raw_refresh_token || '-' %></dd>
   </dl>
 
   <hr />
 
-  <%= link_to 'Use your token', account_path(token: current_token) %> for API authentication.
+  <%= link_to 'Use your token', account_path(token: current_token, refresh_token: raw_refresh_token) %> for API authentication.
 
   <hr />
 

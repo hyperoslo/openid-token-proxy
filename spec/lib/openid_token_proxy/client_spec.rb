@@ -77,35 +77,73 @@ RSpec.describe OpenIDTokenProxy::Client do
     end
   end
 
-  describe '#token_via_auth_code!' do
-    let(:client) { double('authorization_code=' => nil) }
+  describe '#retrieve_token!' do
+    let(:client) {
+      double(
+        'authorization_code=' => nil,
+        'refresh_token=' => nil
+      )
+    }
+    let(:access_token) { 'access token' }
+    let(:id_token) { 'id token' }
+    let(:refresh_token) { 'refresh token' }
+    let(:response) {
+      double(
+        access_token: access_token,
+        id_token: id_token,
+        refresh_token: refresh_token
+      )
+    }
+    let(:token) {
+      OpenIDTokenProxy::Token.new(access_token, id_token)
+    }
 
     before do
       expect(subject).to receive(:new_client).and_return client
+      allow(OpenIDTokenProxy::Token).to receive(:decode!).and_return token
     end
 
-    context 'when auth code could not be exchanged' do
-      it 'raises' do
-        error = Rack::OAuth2::Client::Error.new 400, {}
-        expect(client).to receive(:access_token!).and_raise error
-        expect do
-          subject.token_via_auth_code! 'malformed auth code'
-        end.to raise_error OpenIDTokenProxy::Client::AuthCodeError
+    context 'using auth code' do
+      context 'when auth code could not be exchanged' do
+        it 'raises' do
+          error = Rack::OAuth2::Client::Error.new 400, {}
+          expect(client).to receive(:access_token!).and_raise error
+          expect do
+            subject.retrieve_token! auth_code: 'malformed auth code'
+          end.to raise_error OpenIDTokenProxy::Client::AuthCodeError
+        end
+      end
+
+      context 'when auth code is valid' do
+        it 'returns token instance' do
+          expect(client).to receive(:access_token!).and_return response
+          token = subject.retrieve_token! auth_code: 'valid auth code'
+          expect(token.access_token).to eq access_token
+          expect(token.id_token).to eq id_token
+          expect(token.refresh_token).to eq refresh_token
+        end
       end
     end
 
-    context 'when auth code is valid' do
-      it 'returns token instance' do
-        tokens = double(
-          access_token: 'access token',
-          refresh_token: 'refresh token'
-        )
-        expect(client).to receive(:access_token!).and_return tokens
-        token = OpenIDTokenProxy::Token.new(tokens.access_token)
-        expect(OpenIDTokenProxy::Token).to receive(:decode!).and_return token
-        token = subject.token_via_auth_code! 'valid auth code'
-        expect(token.access_token).to eq 'access token'
-        expect(token.refresh_token).to eq 'refresh token'
+    context 'using refresh token' do
+      context 'when refresh token could not be exchanged' do
+        it 'raises' do
+          error = Rack::OAuth2::Client::Error.new 400, {}
+          expect(client).to receive(:access_token!).and_raise error
+          expect do
+            subject.retrieve_token! refresh_token: 'malformed refresh token'
+          end.to raise_error OpenIDTokenProxy::Client::RefreshTokenError
+        end
+      end
+
+      context 'when refresh token is valid' do
+        it 'returns token instance' do
+          expect(client).to receive(:access_token!).and_return response
+          token = subject.retrieve_token! refresh_token: 'valid refresh token'
+          expect(token.access_token).to eq access_token
+          expect(token.id_token).to eq id_token
+          expect(token.refresh_token).to eq refresh_token
+        end
       end
     end
   end

@@ -19,7 +19,9 @@ RSpec.describe OpenIDTokenProxy::CallbackController, type: :controller do
     context 'when authorization code could not be exchanged' do
       it 'results in 400 BAD REQUEST with error message' do
         error = OpenIDTokenProxy::Client::AuthCodeError.new 'msg'
-        expect(client).to receive(:token_via_auth_code!).and_raise error
+        expect(client).to receive(:retrieve_token!).with(
+          auth_code: auth_code
+        ).and_raise error
         get :handle, code: auth_code
         expect(response.body).to eq 'Could not exchange authorization code: msg.'
         expect(response).to have_http_status :bad_request
@@ -28,7 +30,7 @@ RSpec.describe OpenIDTokenProxy::CallbackController, type: :controller do
 
     context 'when authorization code could be exchanged' do
       before do
-        expect(client).to receive(:token_via_auth_code!).and_return token
+        expect(client).to receive(:retrieve_token!).and_return token
       end
 
       context 'with no-op token acquirement hook' do

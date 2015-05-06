@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   include OpenIDTokenProxy::Token::Authentication
+  include OpenIDTokenProxy::Token::Refresh
 
   require_valid_token
 
