@@ -177,7 +177,7 @@ Refresh tokens may be provided with one of the following:
 Whenever an access token has expired and a refresh token is given, the module will
 attempt to obtain a new token transparently.
 
-The following headers will be present on the API response if, *and only if*, a new
+The following headers will be present on the API response if, **and only if**, a new
 token was obtained:
 
 - `X-Token` header containing the new access token to be used in future requests.
