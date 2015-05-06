@@ -143,7 +143,7 @@ class AccountsController < ApplicationController
 end
 ```
 
-Access tokens may be provided as follows:
+Access tokens may be provided with one of the following:
 
 - `X-Token` header.
 - `Authorization: Bearer <token>` header.
