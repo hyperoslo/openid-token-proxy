@@ -7,6 +7,15 @@ RSpec.describe OpenIDTokenProxy::Config do
     subject
   }
 
+  before do
+    stub_request(:get, "https://login.windows.net/common/.well-known/openid-configuration")
+      .to_return(body: fixture('openid-configuration.json'))
+    stub_request(:get, "https://login.windows.net/common/discovery/keys")
+      .to_return(body: fixture('keys.json'))
+    stub_request(:get, "https://example.com/.well-known/openid-configuration")
+      .to_return(status: 404)
+  end
+
   describe '#initialize' do
     it 'yields configuration to given block' do
       config = described_class.new do |config|
@@ -102,7 +111,7 @@ RSpec.describe OpenIDTokenProxy::Config do
         stub_env('OPENID_ISSUER')
         expect do
           subject.provider_config
-        end.to raise_error
+        end.to raise_error URI::InvalidURIError
       end
     end
 
@@ -111,7 +120,7 @@ RSpec.describe OpenIDTokenProxy::Config do
         subject.issuer = 'https://example.com'
         expect do
           subject.provider_config
-        end.to raise_error
+        end.to raise_error OpenIDConnect::Discovery::DiscoveryFailed
       end
     end
   end
