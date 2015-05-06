@@ -111,9 +111,9 @@ Rails.application.routes.draw do
 end
 ```
 
-Next, register the engine's callback-route (`/auth/callback`) as the redirect URL
-of your OpenID application on the issuer so that any authorization requests are
-routed back to your application.
+Next, register the engine's callback - `https://example.com/auth/callback` - as
+the redirect URL of your OpenID application on the issuer so that any authorization
+requests are routed back to your application.
 
 The proxy itself also needs to be configured with a redirect URL in order for it
 to know what to do with any newly obtained tokens. To boot back into a native
