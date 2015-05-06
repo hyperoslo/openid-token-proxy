@@ -150,6 +150,18 @@ Access tokens may be provided with one of the following:
 - Query string parameter `token`.
 
 
+#### Identity / claims
+
+A valid token is exposed to a controller as `current_token` and identity information
+can be extracted by providing a claim name through hash-syntax:
+
+```ruby
+current_token['email']
+```
+
+Identity providers may support additional claims beyond the [standard OpenID ones](http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims).
+
+
 ### Token refreshing
 
 Most identity providers issue access tokens [with short lifespans](http://openid.net/specs/openid-connect-core-1_0.html#TokenLifetime).
