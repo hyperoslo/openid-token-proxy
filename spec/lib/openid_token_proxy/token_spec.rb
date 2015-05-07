@@ -6,11 +6,11 @@ RSpec.describe OpenIDTokenProxy::Token do
   let(:audience) { 'audience' }
   let(:client_id) { 'client ID' }
   let(:issuer) { 'issuer' }
-  let(:expiry_date) { 2.hours.from_now }
+  let(:expiry_time) { 2.hours.from_now }
 
   let(:id_token) {
     double(
-      exp: expiry_date,
+      exp: expiry_time,
       aud: audience,
       iss: issuer,
       raw_attributes: {
@@ -33,7 +33,7 @@ RSpec.describe OpenIDTokenProxy::Token do
 
   describe '#validate!' do
     context 'when token has expired' do
-      let(:expiry_date) { 2.hours.ago }
+      let(:expiry_time) { 2.hours.ago }
 
       it 'raises' do
         expect do
@@ -78,9 +78,19 @@ RSpec.describe OpenIDTokenProxy::Token do
     end
   end
 
+  describe '#expiry_time' do
+    it 'returns expiry time' do
+      expect(subject.expiry_time.to_i).to eq expiry_time.to_i
+    end
+
+    it 'is in UTC' do
+      expect(subject.expiry_time.zone).to eq 'UTC'
+    end
+  end
+
   describe '#expired?' do
     context 'when token has expired' do
-      let(:expiry_date) { 2.hours.ago }
+      let(:expiry_time) { 2.hours.ago }
       it { should be_expired }
     end
 
