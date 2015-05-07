@@ -61,6 +61,30 @@ RSpec.describe OpenIDTokenProxy::Config do
     end
   end
 
+  describe '#domain_hint' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_DOMAIN_HINT', 'from env')
+      expect(subject.domain_hint).to eq 'from env'
+    end
+
+    it 'may be overriden' do
+      subject.domain_hint = 'overridden'
+      expect(subject.domain_hint).to eq 'overridden'
+    end
+  end
+
+  describe '#prompt' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_PROMPT', 'from env')
+      expect(subject.prompt).to eq 'from env'
+    end
+
+    it 'may be overriden' do
+      subject.prompt = 'overridden'
+      expect(subject.prompt).to eq 'overridden'
+    end
+  end
+
   describe '#redirect_uri' do
     it 'obtains its default from environment' do
       stub_env('OPENID_REDIRECT_URI', 'from env')
