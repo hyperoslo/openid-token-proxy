@@ -9,8 +9,6 @@
 Retrieves and refreshes OpenID tokens on behalf of a user when dealing with complex
 authentication schemes, such as client-side certificates.
 
-**Note: Under development, not for production usage just yet**
-
 **Supported Ruby versions: 2.0.0 or higher**
 
 Licensed under the **MIT** license, see LICENSE for more information.
