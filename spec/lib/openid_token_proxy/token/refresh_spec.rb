@@ -6,8 +6,18 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
   let(:token) {
     OpenIDTokenProxy::Token.new('expired access token', nil, refresh_token)
   }
+  let(:refreshed_expiry_time) { 2.hours.from_now }
+  let(:refreshed_id_token) {
+    double(
+      exp: refreshed_expiry_time
+    )
+  }
   let(:refreshed_token) {
-    OpenIDTokenProxy::Token.new('new access token', nil, 'new refresh token')
+    OpenIDTokenProxy::Token.new(
+      'new access token',
+      refreshed_id_token,
+      'new refresh token'
+    )
   }
 
   before do
@@ -52,6 +62,7 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
         expect(response.body).to eq 'Refresh successful'
         expect(response.headers['X-Token']).to eq 'new access token'
         expect(response.headers['X-Refresh-Token']).to eq 'new refresh token'
+        expect(response.headers['X-Token-Expiry-Time']).to eq refreshed_expiry_time.iso8601
       end
     end
   end

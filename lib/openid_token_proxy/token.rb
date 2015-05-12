@@ -52,6 +52,10 @@ module OpenIDTokenProxy
       true
     end
 
+    def expiry_time
+      Time.at(id_token.exp.to_i).utc
+    end
+
     def expired?
       id_token.exp.to_i <= Time.now.to_i
     end

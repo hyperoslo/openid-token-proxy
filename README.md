@@ -147,6 +147,8 @@ Access tokens may be provided with one of the following:
 - `Authorization: Bearer <token>` header.
 - Query string parameter `token`.
 
+Token expiry time will be exposed through the `X-Token-Expiry-Time` header.
+
 
 #### Identity / claims
 

@@ -3,7 +3,13 @@ require 'spec_helper'
 RSpec.describe OpenIDTokenProxy::Token::Authentication, type: :controller do
   let(:authorization_uri) { 'https://id.hyper.no/authorize' }
   let(:access_token) { 'access token' }
-  let(:token) { OpenIDTokenProxy::Token.new(access_token) }
+  let(:expiry_time) { 2.hours.from_now }
+  let(:id_token) {
+    double(
+      exp: expiry_time
+    )
+  }
+  let(:token) { OpenIDTokenProxy::Token.new(access_token, id_token) }
 
   before do
     allow(token).to receive(:validate!).and_return true
@@ -37,6 +43,11 @@ RSpec.describe OpenIDTokenProxy::Token::Authentication, type: :controller do
       get :index
       expect(response).to have_http_status :ok
       expect(response.body).to eq 'Authentication successful'
+    end
+
+    it 'exposes token expiry time through header' do
+      get :index
+      expect(response.headers['X-Token-Expiry-Time']).to eq expiry_time.iso8601
     end
   end
 

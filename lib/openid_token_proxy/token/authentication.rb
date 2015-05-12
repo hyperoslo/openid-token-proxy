@@ -14,6 +14,7 @@ module OpenIDTokenProxy
       module ClassMethods
         def require_valid_token(*args)
           before_action :require_valid_token, *args
+          after_action :expose_token_expiry_time
         end
       end
 
@@ -31,6 +32,10 @@ module OpenIDTokenProxy
         config = OpenIDTokenProxy.config
         current_token.validate! audience: config.resource,
                                 client_id: config.client_id
+      end
+
+      def expose_token_expiry_time
+        response.headers['X-Token-Expiry-Time'] = current_token.expiry_time.iso8601
       end
 
       def current_token
