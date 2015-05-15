@@ -1,5 +1,3 @@
-require 'active_support/concern'
-
 module OpenIDTokenProxy
   class Token
     module Authentication
