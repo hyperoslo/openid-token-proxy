@@ -125,6 +125,8 @@ OpenIDTokenProxy.configure do |config|
 end
 ```
 
+**Warning**: Redirecting to any path with query parameters (e.g. `example.com/?token=xxx`) could theoretically leak tokens to third parties through the `Referer`-header for external assets.
+
 
 ### Token authentication
 
