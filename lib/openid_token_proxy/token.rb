@@ -73,6 +73,11 @@ module OpenIDTokenProxy
         rescue JSON::JWT::VerificationFailed
           # Iterate through remaining public keys (if any)
           # Raises UnverifiableSignature if none applied (see below)
+
+          # A failure in Certificate#verify leaves messages on the error queue,
+          # which can lead to errors in SSL communication down the road.
+          # See: https://bugs.ruby-lang.org/issues/7215
+          OpenSSL.errors.clear
         else
           return Token.new(access_token, object.raw_attributes)
         end
