@@ -119,7 +119,28 @@ RSpec.describe OpenIDTokenProxy::Token do
     end
 
     context 'when token is well-formed' do
-      context 'with invalid signature or missing public keys' do
+      context 'with invalid signature' do
+        before do
+          allow(OpenIDConnect::RequestObject).to receive(:decode).and_raise JSON::JWT::VerificationFailed
+        end
+
+        it 'raises' do
+          expect do
+            described_class.decode! 'well-formed token', keys
+          end.to raise_error OpenIDTokenProxy::Token::UnverifiableSignature
+        end
+
+        it 'cleans up SSL error pool' do
+          errors = double(clear: true)
+          allow(OpenSSL).to receive(:errors).and_return errors
+          expect do
+            described_class.decode! 'well-formed token', keys
+          end.to raise_error OpenIDTokenProxy::Token::UnverifiableSignature
+          expect(errors).to have_received(:clear)
+        end
+      end
+
+      context 'with missing public keys' do
         it 'raises' do
           expect do
             described_class.decode! 'well-formed token', []
