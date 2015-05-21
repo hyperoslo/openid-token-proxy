@@ -130,7 +130,7 @@ RSpec.describe OpenIDTokenProxy::Token do
           end.to raise_error OpenIDTokenProxy::Token::UnverifiableSignature
         end
 
-        it 'cleans up SSL error pool' do
+        it 'cleans up SSL error queue' do
           errors = double(clear: true)
           allow(OpenSSL).to receive(:errors).and_return errors
           expect do
