@@ -72,7 +72,7 @@ module OpenIDTokenProxy
           raise Malformed.new(e.message)
         rescue JSON::JWT::VerificationFailed
           # Iterate through remaining public keys (if any)
-          # Raises TokenInvalid if none applied (see below)
+          # Raises UnverifiableSignature if none applied (see below)
         else
           return Token.new(access_token, object.raw_attributes)
         end
