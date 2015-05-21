@@ -1,5 +1,10 @@
 # Changelog
 
+### v0.1.3 - May 21, 2015
+
+- Temporary workaround for OpenSSL error queue corruption.
+
+
 ### v0.1.2 - May 18, 2015
 
 - Allow overriding `CallbackController`.
