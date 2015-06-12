@@ -1,3 +1,5 @@
+require 'rails'
+
 module OpenIDTokenProxy
   class Engine < ::Rails::Engine
     isolate_namespace OpenIDTokenProxy
