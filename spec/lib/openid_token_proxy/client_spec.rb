@@ -81,7 +81,8 @@ RSpec.describe OpenIDTokenProxy::Client do
     let(:client) {
       double(
         'authorization_code=' => nil,
-        'refresh_token=' => nil
+        'refresh_token=' => nil,
+        'resource_owner_credentials=' => nil
       )
     }
     let(:access_token) { 'access token' }
@@ -116,7 +117,9 @@ RSpec.describe OpenIDTokenProxy::Client do
 
       context 'when auth code is valid' do
         it 'returns token instance' do
-          expect(client).to receive(:access_token!).and_return response
+          expect(client).to receive(:access_token!).with(
+            :query_string, {}
+          ).and_return response
           token = subject.retrieve_token! auth_code: 'valid auth code'
           expect(token.access_token).to eq access_token
           expect(token.id_token).to eq id_token
@@ -138,12 +141,47 @@ RSpec.describe OpenIDTokenProxy::Client do
 
       context 'when refresh token is valid' do
         it 'returns token instance' do
-          expect(client).to receive(:access_token!).and_return response
+          expect(client).to receive(:access_token!).with(
+            :query_string, {}
+          ).and_return response
           token = subject.retrieve_token! refresh_token: 'valid refresh token'
           expect(token.access_token).to eq access_token
           expect(token.id_token).to eq id_token
           expect(token.refresh_token).to eq refresh_token
         end
+      end
+    end
+
+    context 'using username and password' do
+      context 'when credentials are invalid' do
+        it 'raises' do
+          error = Rack::OAuth2::Client::Error.new 400, {}
+          expect(client).to receive(:access_token!).and_raise error
+          expect do
+            token = subject.retrieve_token! username: 'foo', password: 'bar'
+          end.to raise_error OpenIDTokenProxy::Client::CredentialsError
+        end
+      end
+
+      context 'when credentials are valid' do
+        it 'returns token instance' do
+          expect(client).to receive(:access_token!).with(
+            :query_string, {}
+          ).and_return response
+          token = subject.retrieve_token! username: 'foo', password: 'bar'
+          expect(token.access_token).to eq access_token
+          expect(token.id_token).to eq id_token
+          expect(token.refresh_token).to eq refresh_token
+        end
+      end
+    end
+
+    context 'when given options' do
+      it 'passes these through' do
+        expect(client).to receive(:access_token!).with(
+          :query_string, resource: 'x'
+        ).and_return response
+        subject.retrieve_token! auth_code: 'valid auth code', resource: 'x'
       end
     end
   end

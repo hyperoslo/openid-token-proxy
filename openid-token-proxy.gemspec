@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'openid_connect', '~> 0.8.3'
+  spec.add_dependency 'rack-oauth2', '~> 1.2.0'
   spec.add_dependency 'rails', '~> 4.0'
 
   spec.add_development_dependency 'bundler', '~> 1.6'
