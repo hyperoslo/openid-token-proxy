@@ -52,6 +52,13 @@ module OpenIDTokenProxy
       true
     end
 
+    # Whether this token is valid
+    def valid?(assertions = {})
+      validate!(assertions)
+    rescue OpenIDTokenProxy::Error
+      false
+    end
+
     def expiry_time
       Time.at(id_token.exp.to_i).utc
     end
