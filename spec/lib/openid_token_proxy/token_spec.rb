@@ -78,6 +78,22 @@ RSpec.describe OpenIDTokenProxy::Token do
     end
   end
 
+  describe '#valid?' do
+    context 'when token is invalid' do
+      it 'returns false' do
+        allow(subject).to receive(:validate!).and_raise OpenIDTokenProxy::Token::Expired
+        expect(subject).not_to be_valid
+      end
+    end
+
+    context 'when token is valid' do
+      it 'returns true' do
+        allow(subject).to receive(:validate!).and_return true
+        expect(subject).to be_valid
+      end
+    end
+  end
+
   describe '#expiry_time' do
     it 'returns expiry time' do
       expect(subject.expiry_time.to_i).to eq expiry_time.to_i
