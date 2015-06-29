@@ -1,5 +1,11 @@
 # Changelog
 
+### v0.1.4 - June 29, 2015
+
+- Adds `Token#valid?`.
+- `Client#retrieve_token!` now supports retrieving token via username/password.
+
+
 ### v0.1.3 - May 21, 2015
 
 - Temporary workaround for OpenSSL error queue corruption.
