@@ -1,5 +1,10 @@
 # Changelog
 
+### v0.1.5 - September 3, 2015
+
+- Exposes `Config#end_session_endpoint` for logging out.
+
+
 ### v0.1.4 - June 29, 2015
 
 - Adds `Token#valid?`.
