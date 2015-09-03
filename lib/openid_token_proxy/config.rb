@@ -4,8 +4,12 @@ module OpenIDTokenProxy
   class Config
     attr_accessor :client_id, :client_secret, :issuer
     attr_accessor :domain_hint, :prompt, :redirect_uri, :resource
+
     attr_accessor :authorization_uri
-    attr_accessor :authorization_endpoint, :token_endpoint, :userinfo_endpoint
+
+    attr_accessor :authorization_endpoint, :token_endpoint,
+                  :userinfo_endpoint, :end_session_endpoint
+
     attr_accessor :token_acquirement_hook
     attr_accessor :public_keys
 
@@ -24,6 +28,7 @@ module OpenIDTokenProxy
       @authorization_endpoint = ENV['OPENID_AUTHORIZATION_ENDPOINT']
       @token_endpoint = ENV['OPENID_TOKEN_ENDPOINT']
       @userinfo_endpoint = ENV['OPENID_USERINFO_ENDPOINT']
+      @end_session_endpoint = ENV['OPENID_END_SESSION_ENDPOINT']
 
       @token_acquirement_hook = proc { }
 
@@ -47,6 +52,10 @@ module OpenIDTokenProxy
 
     def userinfo_endpoint
       @userinfo_endpoint || provider_config.userinfo_endpoint
+    end
+
+    def end_session_endpoint
+      @end_session_endpoint || provider_config.raw['end_session_endpoint']
     end
 
     def public_keys

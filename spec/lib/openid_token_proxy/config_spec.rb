@@ -209,6 +209,26 @@ RSpec.describe OpenIDTokenProxy::Config do
     end
   end
 
+  describe '#end_session_endpoint' do
+    it 'obtains its default from environment' do
+      stub_env('OPENID_END_SESSION_ENDPOINT', 'from env')
+      expect(subject.end_session_endpoint).to eq 'from env'
+    end
+
+    it 'may be set explicitly' do
+      subject.end_session_endpoint = 'overridden'
+      expect(subject.end_session_endpoint).to eq 'overridden'
+    end
+
+    context 'when not set' do
+      it 'defaults to endpoint from provider config' do
+        stub_env('OPENID_END_SESSION_ENDPOINT')
+        ep = with_valid_issuer.end_session_endpoint
+        expect(ep).to eq 'https://login.windows.net/common/oauth2/logout'
+      end
+    end
+  end
+
   describe '#public_keys' do
     it 'may be set explicitly' do
       subject.public_keys = []
