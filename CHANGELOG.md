@@ -1,5 +1,11 @@
 # Changelog
 
+
+### v0.1.6 - October 13, 2015
+
+- Update openid_connect to latest version.
+
+
 ### v0.1.5 - September 3, 2015
 
 - Exposes `Config#end_session_endpoint` for logging out.
