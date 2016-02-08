@@ -74,5 +74,11 @@ RSpec.describe OpenIDTokenProxy::Token::Authentication, type: :controller do
       get :index
       expect(controller.raw_token).to eq 'raw token'
     end
+
+    it 'may be provided as a cookie' do
+      cookies[:token] = 'raw token'
+      get :index
+      expect(controller.raw_token).to eq 'raw token'
+    end
   end
 end
