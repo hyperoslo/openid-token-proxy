@@ -21,7 +21,9 @@ module OpenIDTokenProxy
       end
 
       def raw_refresh_token
-        params[:refresh_token] || request.headers['X-Refresh-Token']
+        params[:refresh_token] ||
+        cookies[:refresh_token] ||
+        request.headers['X-Refresh-Token']
       end
     end
   end
