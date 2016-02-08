@@ -50,7 +50,7 @@ module OpenIDTokenProxy
           return token if token
         end
 
-        cookies[:token] || request.headers['X-Token']
+        request.headers['X-Token'] || cookies[:token]
       end
     end
   end
