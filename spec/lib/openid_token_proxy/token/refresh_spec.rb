@@ -57,12 +57,18 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
 
     context 'when token was refreshed successfully' do
       it 'executes actions normally returning new tokens as headers' do
-        get :index, refresh_token: refresh_token
-        expect(response).to have_http_status :ok
-        expect(response.body).to eq 'Refresh successful'
-        expect(response.headers['X-Token']).to eq 'new access token'
-        expect(response.headers['X-Refresh-Token']).to eq 'new refresh token'
-        expect(response.headers['X-Token-Expiry-Time']).to eq refreshed_expiry_time.iso8601
+        OpenIDTokenProxy.configure_temporarily do |config|
+          uri = '/#token'
+          block = double('block')
+          config.token_refreshment_hook = proc { |token, error| block.run }
+          expect(block).to receive(:run)
+          get :index, refresh_token: refresh_token
+          expect(response).to have_http_status :ok
+          expect(response.body).to eq 'Refresh successful'
+          expect(response.headers['X-Token']).to eq 'new access token'
+          expect(response.headers['X-Refresh-Token']).to eq 'new refresh token'
+          expect(response.headers['X-Token-Expiry-Time']).to eq refreshed_expiry_time.iso8601
+        end
       end
     end
   end
