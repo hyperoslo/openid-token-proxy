@@ -83,5 +83,11 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
       get :index
       expect(controller.raw_refresh_token).to eq 'refresh token'
     end
+
+    it 'may be provided as a cookie' do
+      cookies[:refresh_token] = refresh_token
+      get :index
+      expect(controller.raw_refresh_token).to eq 'refresh token'
+    end
   end
 end

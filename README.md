@@ -148,6 +148,7 @@ Access tokens may be provided with one of the following:
 - `X-Token` header.
 - `Authorization: Bearer <token>` header.
 - Query string parameter `token`.
+- Cookie `token`.
 
 Token expiry time will be exposed through the `X-Token-Expiry-Time` header.
 
@@ -187,6 +188,7 @@ Refresh tokens may be provided with one of the following:
 
 - `X-Refresh-Token` header.
 - Query string parameter `refresh_token`.
+- Cookie `refresh_token`.
 
 Whenever an access token has expired and a refresh token is given, the module will
 attempt to obtain a new token transparently.
