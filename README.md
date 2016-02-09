@@ -197,6 +197,17 @@ token was obtained:
 - `X-Token` header containing the new access token to be used in future requests.
 - `X-Refresh-Token` header containing the new refresh token.
 
+You may configure some code to be ran (scoped to a controller) when a token is
+successfully refreshed:
+
+```ruby
+OpenIDTokenProxy.configure do |config|
+  config.token_refreshment_hook = proc { |token|
+    cookies[:token] = token.access_token
+  }
+end
+```
+
 
 ## Contributing
 
