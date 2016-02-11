@@ -58,10 +58,10 @@ RSpec.describe OpenIDTokenProxy::Token::Refresh, type: :controller do
     context 'when token was refreshed successfully' do
       it 'executes actions normally returning new tokens as headers' do
         OpenIDTokenProxy.configure_temporarily do |config|
-          block = double('block')
-          config.token_refreshment_hook = proc { |token| block.run(token) }
-          expect(block).to receive(:run).with(instance_of(OpenIDTokenProxy::Token))
-          get :index, refresh_token: refresh_token
+          expect do |probe|
+            config.token_refreshment_hook = probe
+            get :index, refresh_token: refresh_token
+          end.to yield_with_args(instance_of(OpenIDTokenProxy::Token))
           expect(response).to have_http_status :ok
           expect(response.body).to eq 'Refresh successful'
           expect(response.headers['X-Token']).to eq 'new access token'
