@@ -1,5 +1,9 @@
 # Changelog
 
+### v0.1.7 - February 15, 2016
+
+- Allow passing tokens from cookies.
+- Allowing hooking into token refreshment.
 
 ### v0.1.6 - October 13, 2015
 
