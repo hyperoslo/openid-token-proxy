@@ -5,7 +5,7 @@ RSpec.describe OpenIDTokenProxy::CallbackController, type: :controller do
   let(:access_token) { 'access token' }
   let(:auth_code) { 'authorization code' }
   let(:client) { OpenIDTokenProxy.client }
-  let(:token) { double(access_token: access_token) }
+  let(:token) { OpenIDTokenProxy::Token.new 'token' }
 
   context 'when authorization code is missing' do
     it 'results in 400 BAD REQUEST with error message' do
@@ -36,8 +36,10 @@ RSpec.describe OpenIDTokenProxy::CallbackController, type: :controller do
       context 'with no-op token acquirement hook' do
         it 'redirects to root' do
           OpenIDTokenProxy.configure_temporarily do |config|
-            config.token_acquirement_hook = proc { }
-            get :handle, code: auth_code
+            expect do |probe|
+              config.token_acquirement_hook = probe
+              get :handle, code: auth_code
+            end.to yield_with_args(instance_of(OpenIDTokenProxy::Token))
             expect(response).to redirect_to controller.main_app.root_url
           end
         end

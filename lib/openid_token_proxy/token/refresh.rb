@@ -17,6 +17,11 @@ module OpenIDTokenProxy
           )
           response.headers['X-Token'] = current_token.access_token
           response.headers['X-Refresh-Token'] = current_token.refresh_token
+
+          instance_exec(
+            current_token,
+            &OpenIDTokenProxy.config.token_refreshment_hook
+          )
         end
       end
 

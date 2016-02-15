@@ -11,6 +11,7 @@ module OpenIDTokenProxy
                   :userinfo_endpoint, :end_session_endpoint
 
     attr_accessor :token_acquirement_hook
+    attr_accessor :token_refreshment_hook
     attr_accessor :public_keys
 
     def initialize
@@ -31,6 +32,7 @@ module OpenIDTokenProxy
       @end_session_endpoint = ENV['OPENID_END_SESSION_ENDPOINT']
 
       @token_acquirement_hook = proc { }
+      @token_refreshment_hook = proc { }
 
       yield self if block_given?
     end
