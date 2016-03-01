@@ -1,5 +1,4 @@
 require 'openid_token_proxy/token/expired'
-require 'openid_token_proxy/token/invalid_application'
 require 'openid_token_proxy/token/invalid_audience'
 require 'openid_token_proxy/token/invalid_issuer'
 require 'openid_token_proxy/token/malformed'
@@ -37,11 +36,6 @@ module OpenIDTokenProxy
       if assertions[:audience]
         audiences = Array(id_token.aud)
         raise InvalidAudience unless audiences.include? assertions[:audience]
-      end
-
-      if assertions[:client_id]
-        appid = id_token.raw_attributes['appid']
-        raise InvalidApplication if appid && appid != assertions[:client_id]
       end
 
       if assertions[:issuer]
