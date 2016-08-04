@@ -109,6 +109,30 @@ RSpec.describe OpenIDTokenProxy::Config do
     end
   end
 
+  describe '#audiences' do
+    context 'obtaining its default from environment' do
+      it 'supports a single audience' do
+        stub_env('OPENID_AUDIENCES', 'foo')
+        expect(subject.audiences).to eq ['foo']
+      end
+
+      it 'supports multiple audiences' do
+        stub_env('OPENID_AUDIENCES', 'foo,bar')
+        expect(subject.audiences).to eq ['foo', 'bar']
+      end
+    end
+
+    it 'may be set explicitly' do
+      subject.audiences = ['overridden']
+      expect(subject.audiences).to eq ['overridden']
+    end
+
+    it 'may be obtained implicitly from resource' do
+      subject.resource = 'resource'
+      expect(subject.audiences).to eq ['resource']
+    end
+  end
+
   describe '#authorization_uri' do
     it 'obtains its default from environment' do
       stub_env('OPENID_AUTHORIZATION_URI', 'from env')
