@@ -28,7 +28,7 @@ module OpenIDTokenProxy
 
       def require_valid_token
         config = OpenIDTokenProxy.config
-        current_token.validate! audience: config.resource
+        current_token.validate! audiences: config.audiences
       end
 
       def expose_token_expiry_time
