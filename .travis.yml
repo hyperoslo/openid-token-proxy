@@ -3,4 +3,9 @@ cache: bundler
 rvm:
   - 2.0.0
   - 2.1.0
+  - 2.2.5
+matrix:
+  allow_failures:
+    - rvm: 2.0.0
+    - rvm: 2.1.0
 script: bundle exec rake spec

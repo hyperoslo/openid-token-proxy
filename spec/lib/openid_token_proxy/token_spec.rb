@@ -42,14 +42,6 @@ RSpec.describe OpenIDTokenProxy::Token do
       end
     end
 
-    context 'when application differs' do
-      it 'raises' do
-        expect do
-          subject.validate! client_id: 'expected client ID'
-        end.to raise_error OpenIDTokenProxy::Token::InvalidApplication
-      end
-    end
-
     context 'when audience differs' do
       it 'raises' do
         expect do
@@ -70,7 +62,6 @@ RSpec.describe OpenIDTokenProxy::Token do
       it 'returns true' do
         assertions = {
           audience: audience,
-          client_id: client_id,
           issuer: issuer
         }
         expect(subject.validate! assertions).to be_truthy
