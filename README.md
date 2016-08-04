@@ -63,6 +63,10 @@ OpenIDTokenProxy.configure do |config|
   config.redirect_uri = 'https://example.com/auth/callback'
   config.resource = 'https://graph.windows.net'
 
+  # By default, only tokens issued for the resource above are accepted
+  # Alternatively, you can override the allowed audiences or allow multiple:
+  config.audiences = ['https://id.hyper.no', 'https://graph.windows.net']
+
   # Indicates which domain users will presumably be signing in with
   config.domain_hint = 'example.com'
 
@@ -85,6 +89,7 @@ end
 
 Alternatively, these environment variables will be picked up automatically:
 
+- `OPENID_AUDIENCES` (comma-separated list, defaults to `OPENID_RESOURCE`)
 - `OPENID_AUTHORIZATION_ENDPOINT`
 - `OPENID_AUTHORIZATION_URI`
 - `OPENID_CLIENT_ID`
