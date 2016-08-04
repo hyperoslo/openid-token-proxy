@@ -1,5 +1,9 @@
 # Changelog
 
+### v0.1.8 - August 4, 2016
+
+- No longer validates client/application ID.
+
 ### v0.1.7 - February 15, 2016
 
 - Allow passing tokens from cookies.
