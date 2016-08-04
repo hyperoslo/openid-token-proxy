@@ -27,20 +27,25 @@ module OpenIDTokenProxy
       id_token.raw_attributes[key]
     end
 
-    # Validates this token's expiration state, application, audience and issuer
+    # Validates this token's expiration state, application, audiences and issuer
     def validate!(assertions = {})
       raise Expired if expired?
 
       # TODO: Nonce validation
 
-      if assertions[:audience]
-        audiences = Array(id_token.aud)
-        raise InvalidAudience unless audiences.include? assertions[:audience]
+      audiences = assertions[:audiences] || Array(assertions[:audience])
+      if audiences.any?
+        audience = id_token.aud
+        unless audiences.include? audience
+          raise InvalidAudience.new(audience)
+        end
       end
 
       if assertions[:issuer]
         issuer = id_token.iss
-        raise InvalidIssuer unless issuer == assertions[:issuer]
+        unless issuer == assertions[:issuer]
+          raise InvalidIssuer.new(issuer)
+        end
       end
 
       true
