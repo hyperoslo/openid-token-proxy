@@ -62,7 +62,6 @@ RSpec.describe OpenIDTokenProxy::Token do
       it 'returns true' do
         assertions = {
           audience: audience,
-          client_id: client_id,
           issuer: issuer
         }
         expect(subject.validate! assertions).to be_truthy
