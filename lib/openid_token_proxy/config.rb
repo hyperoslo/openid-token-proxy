@@ -5,7 +5,7 @@ module OpenIDTokenProxy
     attr_accessor :client_id, :client_secret, :issuer
     attr_accessor :domain_hint, :prompt, :redirect_uri, :resource
 
-    attr_writer :audiences
+    attr_writer :allowed_audiences
 
     attr_accessor :authorization_uri
 
@@ -26,8 +26,8 @@ module OpenIDTokenProxy
       @redirect_uri = ENV['OPENID_REDIRECT_URI']
       @resource = ENV['OPENID_RESOURCE']
 
-      @audiences = if ENV['OPENID_AUDIENCES']
-        ENV['OPENID_AUDIENCES'].split(',')
+      @allowed_audiences = if ENV['OPENID_ALLOWED_AUDIENCES']
+        ENV['OPENID_ALLOWED_AUDIENCES'].split(',')
       end
 
       @authorization_uri = ENV['OPENID_AUTHORIZATION_URI']
@@ -70,8 +70,8 @@ module OpenIDTokenProxy
       @public_keys ||= provider_config.public_keys
     end
 
-    def audiences
-      @audiences || Array(@resource)
+    def allowed_audiences
+      @allowed_audiences || Array(@resource)
     end
   end
 end
