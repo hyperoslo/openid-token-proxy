@@ -50,6 +50,14 @@ RSpec.describe OpenIDTokenProxy::Token do
       end
     end
 
+    context 'when audience is not white-listed' do
+      it 'raises' do
+        expect do
+          subject.validate! audiences: ['expected', 'audiences']
+        end.to raise_error OpenIDTokenProxy::Token::InvalidAudience
+      end
+    end
+
     context 'when issuer differs' do
       it 'raises' do
         expect do
@@ -59,12 +67,24 @@ RSpec.describe OpenIDTokenProxy::Token do
     end
 
     context 'when all is well' do
-      it 'returns true' do
-        assertions = {
-          audience: audience,
-          issuer: issuer
-        }
-        expect(subject.validate! assertions).to be_truthy
+      context 'with a single audience' do
+        it 'returns true' do
+          assertions = {
+            audience: audience,
+            issuer: issuer
+          }
+          expect(subject.validate! assertions).to be_truthy
+        end
+      end
+
+      context 'with multiple audiences in white list' do
+        it 'returns true' do
+          assertions = {
+            audiences: [audience, 'other allowed audience'],
+            issuer: issuer
+          }
+          expect(subject.validate! assertions).to be_truthy
+        end
       end
     end
   end

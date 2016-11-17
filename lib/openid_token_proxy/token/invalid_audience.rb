@@ -3,8 +3,8 @@ module OpenIDTokenProxy
 
     # Raised when a token's audience did not match
     class InvalidAudience < Error
-      def initialize
-        super 'Token was issued for an unexpected audience/resource.'
+      def initialize(audience)
+        super "Token was issued for an unexpected audience: #{audience}."
       end
     end
 
